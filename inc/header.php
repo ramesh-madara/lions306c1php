@@ -1,5 +1,5 @@
 <?php include './config/database2.php'; ?>
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -12,27 +12,27 @@
 
 <body>
   <nav class="navbar navbar-expand-sm navbar-light bg-light mb-4">
-    <div class="container">
-      <!-- <a class="navbar-brand" href="index.php">Sumudu Medical Center</a> -->
-      <a class="navbar-brand" href="index.php">Volunteers</a>
+    <div class="container"> -->
+<!-- <a class="navbar-brand" href="index.php">Sumudu Medical Center</a> -->
+<!-- <a class="navbar-brand" href="index.php">Volunteers</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <!-- <a class="nav-link" href="index.php">Make Appointment</a> -->
-          </li>
-          <li class="nav-item">
-            <!-- <a class="nav-link" href="feedback.php">Made Appointments</a> -->
-          </li>
-          <li class="nav-item">
-            <!-- <a class="nav-link" href="about.php">About</a> -->
-          </li>
+          <li class="nav-item"> -->
+<!-- <a class="nav-link" href="index.php">Make Appointment</a> -->
+<!-- </li> -->
+<!-- <li class="nav-item"> -->
+<!-- <a class="nav-link" href="feedback.php">Made Appointments</a> -->
+<!-- </li> -->
+<!-- <li class="nav-item"> -->
+<!-- <a class="nav-link" href="about.php">About</a> -->
+<!-- </li>
         </ul>
       </div>
     </div>
   </nav>
 
   <main>
-    <div class="container d-flex flex-column align-items-center">
+    <div class="container d-flex flex-column align-items-center"> -->
