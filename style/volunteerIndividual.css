@@ -1,0 +1,44 @@
+  @import url('https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@100&display=swap');
+
+.memberOuterMost{
+    background-color: rgba(0, 0, 0, 0.185);
+    min-width: 100vw;
+    display: flex;
+    justify-content: flex-start;
+    /* display: none;    */
+}
+.memberOuterMost .photoOuter {
+    min-width: 300px;
+    max-width: 300px;
+    min-height: 500px;
+    max-height: 500px;
+    background-color: rgba(0, 0, 0, 0.345);
+    /* border-radius: 10px; */
+
+}
+.memberOuterMost .photoOuter img{
+    width: 100%;
+    height: 100%;
+    object-fit:cover;
+    background-color: rgba(0, 0, 0, 0.345);
+    /* border-radius: 10px; */
+}
+.detailsOuter{
+    margin-left: 20px;
+    padding: 20px;
+}
+.detailsOuter .nameMain{
+    font-size: 4rem;
+    font-weight: bold;
+}
+.detailsOuter .position{
+    margin-top: -15px;
+}
+.detailsOuter .contents{
+    margin-top: 10px;
+}
+.detailsOuter .contents span{
+    font-weight: 500;
+}
+
+
