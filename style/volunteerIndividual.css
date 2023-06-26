@@ -1,8 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@100&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Ysabeau+Office:wght@200&display=swap");
-body {
-  /* background-color: rgba(0, 0, 255, 0.216); */
-}
 .memberOuterMost {
   margin-left: -10px;
   margin-top: -10px;
@@ -41,7 +38,7 @@ body {
   overflow: hidden;
 }
 .detailsOuter .nameMain {
-  font-family: "Anton", sans-serif;
+  /* font-family: "Anton", sans-serif; */
   color: rgb(212, 172, 250);
   font-size: 4rem;
   font-weight: 500;
@@ -56,15 +53,18 @@ body {
 
   margin-top: 10px;
 }
-.detailsOuter .contents  .detail{
-    font-weight: 500;
+.detailsOuter .contents .detail {
+  font-weight: 500;
 }
 .detailsOuter .contents span {
   font-weight: 800;
 }
 
 .socialLinks {
-    margin-top:100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
   width: 300px;
   display: flex;
   justify-content: space-between;
@@ -82,9 +82,11 @@ body {
   align-items: center;
   text-decoration: none;
   margin: 0px;
+  color: black;
 }
-.socialLinks a:hover{
-    scale:1.05;
+.socialLinks a:hover {
+  scale: 1.05;
+  color:black;
 }
 .socialLinks a i {
   color: rgb(107, 105, 105);
