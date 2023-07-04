@@ -105,7 +105,7 @@ if ($result) {
                         <a class="twitter"><i class="fa-brands fa-twitter"></i></a>
                         <a class="insta"><i class="fa-brands fa-instagram"></i></a>
                         <a class="in"><i class="fa-brands fa-linkedin-in"></i></a>
-                        <a class="wtsapp" href="" class=""><i class="fa-brands fa-whatsapp"></i></a>
+                        <a class="wtsapp" class=""><i class="fa-brands fa-whatsapp"></i></a>
                         <a class="email"><i class="fa-regular fa-envelope"></i></a>
 
                     </div>
