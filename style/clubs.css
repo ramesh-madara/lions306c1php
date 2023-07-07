@@ -41,8 +41,11 @@ overflow: hidden;
   gap: 20px;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding: 0px 90px 0px 90px;
+  /* padding: 0px 90px 0px 90px; */
   /* background-color: rgba(25, 52, 230, 0.641); */
+}
+#SelectA{
+  /* display:none ; */
 }
 
 .outer {
@@ -198,10 +201,31 @@ overflow: hidden;
 .zone option{
   color:black;
 }
+.regionNameOuter{
+  /* background-color: #9c707052; */
+  min-width: 100vw;
+  margin-top: 20px;
+  display: flex;
+  /* height: 90px; */
+  align-items:flex-end;
+  background-color: aqua;
+}
+.regionName{
+  font-family: "Anton", sans-serif;
+  font-size:3.5rem  ;
+  min-width: 100vw;
+}
+.zoneNameOuter{
+}
+.zoneName{
+  font-size:2rem  ;
+ font-family: "Anton", sans-serif;
+
+}
 
 @media (max-width: 901px) {
   .volunteersOuter {
-    justify-content: center;
+    /* justify-content: center; */
 
   }
   .clubDetails {

@@ -1,12 +1,13 @@
 <?php include 'inc/header.php'; ?>
-<link rel="stylesheet" type="text/css" href="style/clubs2.css">
+<link rel="stylesheet" type="text/css" href="style/clubs.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/solid.min.js" integrity="sha512-apZ8JDL5kA1iqvafDdTymV4FWUlJd8022mh46oEMMd/LokNx9uVAzhHk5gRll+JBE6h0alB2Upd3m+ZDAofbaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- //Delete -->
 <?php
 $district = "District 306 C1";
-$region = "Select Region";
+$region = '';
 $zone = "Select Zone";
+$max = '6';
 // $Zone = "";
 ?>
 <!--SEARCHED or NOT BITFLIP-->
@@ -22,20 +23,6 @@ $volunteers = mysqli_fetch_all($result, MYSQLI_ASSOC);
   <!-- <p class="lead mt-3">There is no Volunteers</p> -->
 <?php endif; ?>
 
-
-<?php
-if (isset($_POST['selected_region'])) {
-  $selectedRegion = $_POST['selected_region'];
-  $region = $selectedRegion;
-  echo $region;
-}
-if (isset($_POST['selected_zone'])) {
-  $selectedZone = $_POST['selected_zone'];
-  $zone = $selectedZone;
-  echo $zone;
-  echo $region;
-}
-?>
 <div style="display: flex;">
 </div>
 
@@ -81,38 +68,54 @@ if (isset($_POST['selected_zone'])) {
       <input type="submit" name="showall" value="Show all" class="btn btn-secondary w-25 text-center">
     </form>
   </nav>
-  <?php
-  $region = ""; // Initialize the variable
 
-  if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve the value from the AJAX request
-    $region = $_POST["region"];
+  <?php
+  if (isset($_POST['region'])) {
     echo $region;
-    // Use the $region variable as needed
+
+    $region = $_POST['region'];
+    echo $region;
+
+    // Use the $region variable in your PHP script as needed
+    echo $region;
+  } else {
+    echo "No region value received.";
   }
   ?>
 
   <script>
-    function updateZones(str) {
-      var xhttp = new XMLHttpRequest();
-      console.log(xhttp);
-      xhttp.onreadystatechange = function() {
-        console.log(str + "local");
+    function update(str) {
+      updateZones(str);
+      setRegion(str);
 
-        if (this.readyState == 4 && this.status == 200) {}
+    }
+
+    function setRegion(region) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "clubs.php", true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+          // Request completed successfully
+          console.log("<?php echo $region; ?>");
+          console.log(xhr.responseText);
+        }
       };
-      xhttp.open("POST", "", true); // Leave the URL empty to post to the current page
-      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xhttp.send("region=" + str);
+      xhr.send("region=" + encodeURIComponent(region));
+      var regionValue = "<?php echo $region; ?>";
+      console.log(regionValue);
+    }
+
+    function updateZones(str) {
 
 
-      console.log(str);
+      // console.log(str);
       if (window.XMLHttpRequest) {
         xmlhttp = new XMLHttpRequest();
-        console.log(xmlhttp);
+        // console.log(xmlhttp);
       } else {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        console.log(xmlhttp);
+        // console.log(xmlhttp);
 
       }
       xmlhttp.onreadystatechange = function() {
@@ -123,34 +126,142 @@ if (isset($_POST['selected_zone'])) {
       }
       xmlhttp.open("GET", "helper.php?value=" + str, true);
       xmlhttp.send();
-    }
+      // console.log("<?php echo $region; ?>");
+    };
+
+    function updateClubs(zone) {
+      var region = document.getElementById("SelectA").value;
+      console.log(region);
+      console.log(zone);
+
+      if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+      } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("clubs").innerHTML = this.responseText;
+        }
+      }
+
+      var url = "helper.php?region=" + (region) + "&zone=" + (zone);
+      console.log(url);
+      xmlhttp.open("GET", "helper.php?region=" + (region) + "&zone=" + (zone), true);
+      xmlhttp.send();
+    };
   </script>
-  <?php
-  $region = ""; // Initialize the variable
 
-  if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve the value from the AJAX request
-    $region = $_POST["region"];
-    echo $region;
-    // Use the $region variable as needed
-  }
-  ?>
 
-  <div class="volunteersOuter">
-    <div id="select-container">
-      <select id="SelectA" onchange="updateZones(this.value)">
-        <option disabled selected value="">Select an option</option>
-        <?php foreach ($volunteers as $item) : ?>
-          <option value="<?php echo $item['Region_Name']; ?>"><?php echo $item['Region_Name']; ?></option>
-        <?php endforeach; ?>
-      </select>
-      <select id="zone">
-        <!-- <option>Select</option> -->
 
-      </select>
+  <div>
+    <style>
+      .hierarchy {
+        /* background-color: grey; */
+        width: 70vw;
+        /* display: flex; */
+      }
+
+      .reg {
+        display: flex;
+        /* justify-content: center; */
+        /* background-color: blue; */
+        gap: 35px;
+        flex-wrap: wrap;
+      }
+
+      .ded {
+        /* background-color: wheat; */
+        width: 250px;
+
+      }
+
+      tr {
+        display: flex;
+        /* align-items: flex-start; */
+      }
+
+      .clubCount p {
+        font-weight: bold;
+      }
+
+      a {
+        text-decoration: none;
+        color: black;
+      }
+    </style>
+    <div class="hierarchy">
+      <div class="volunteersOuter">
+        <div id="select-container">
+          <form action="POST">
+            <select id="SelectA" onchange="update(this.value)">
+              <option disabled selected value="">Select an option</option>
+              <?php foreach ($volunteers as $item) : ?>
+                <option value="<?php echo $item['Region_Name']; ?>"><?php echo $item['Region_Name']; ?></option>
+              <?php endforeach; ?>
+            </select>
+            <select id="zone" onchange="updateClubs(this.value)">
+              <option disabled selected value="">Select a Zone</option>
+            </select>
+            <select id="clubs">
+              <option disabled selected value="">Select a Club</option>
+            </select>
+          </form>
+        </div>
+      </div>
+
+      <?php foreach ($volunteers as $item) : ?>
+
+
+        <div>
+          <h1><a href="regionPage.php?region=<?php echo $item['Region_Name']; ?>&district=<?php echo $district ?>"><?php echo $item['Region_Name']; ?></a></h1>
+        </div>
+        <?php
+        $regionName = $item['Region_Name'];
+        $fetch2 = "SELECT DISTINCT Zone_Name FROM clubs WHERE District_Name = '$district' AND Region_Name = '$regionName' ORDER BY CAST(SUBSTRING(Zone_Name, 6) AS UNSIGNED) ASC ";
+        $result2 = mysqli_query($conn, $fetch2);
+        $volunteers2 = mysqli_fetch_all($result2, MYSQLI_ASSOC);
+        ?>
+        <div class="reg">
+          <?php foreach ($volunteers2 as $item2) : ?>
+            <div class="ded">
+              <h4><a href="zonePage.php?district=<?php echo $district  ?>&region=<?php echo $item['Region_Name']; ?>&zone=<?php echo $item2['Zone_Name']; ?>"><?php echo $item2['Zone_Name']; ?></a></h4>
+              <?php
+              $zoneName = $item2['Zone_Name'];
+              $fetch3 = "SELECT DISTINCT Club_Name, Club_ID FROM clubs WHERE District_Name = '$district' AND Region_Name = '$regionName' AND Zone_Name = '$zoneName' ORDER BY Club_Name ASC";
+              $result3 = mysqli_query($conn, $fetch3);
+              $clubs = mysqli_fetch_all($result3, MYSQLI_ASSOC);
+              ?>
+              <?php for ($i = 0; $i < count($clubs); $i++) {
+              ?>
+                <table>
+                  <tr>
+                    <td>
+                      <div class="clubCount">
+                        <p><?php $count = $i + 1;
+                            echo $count . "."; ?></p>
+                      </div>
+                    </td>
+                    <td>
+                      <div>
+                        <p><a href="clubPage.php?district=<?php echo $district  ?>&region=<?php echo $item['Region_Name']; ?>&zone=<?php echo $item2['Zone_Name']; ?>&clubID=<?php echo $clubs[$i]['Club_ID']; ?>"><?php echo $clubs[$i]['Club_Name']; ?></a></p>
+                      </div>
+
+                    </td>
+                  </tr>
+                </table>
+              <?php } ?>
+            </div>
+          <?php endforeach; ?>
+        </div>
+
+
+
+      <?php endforeach; ?>
     </div>
 
   </div>
 </body>
-
-<?php include 'inc/footer.php'; ?>
+<?php
+include 'inc/footer.php'; ?>
