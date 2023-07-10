@@ -71,7 +71,7 @@ if ($searched == true) {
     $volunteers = mysqli_fetch_all($result, MYSQLI_ASSOC);
 } else {
     $fetch =
-        "SELECT * FROM c_1_members_new WHERE District_Name = '$escapedDistrict' AND Region_Name = '$escapedRegionName' AND Zone_Name = '$escapedZoneName' AND Club_ID = '$escapedClubID' ORDER BY CAST(SUBSTRING(Zone_Name, 6) AS UNSIGNED) ASC";
+        "SELECT * FROM c_1_members_new WHERE District_Name = '$escapedDistrict' AND Region_Name = '$escapedRegionName' AND Zone_Name = '$escapedZoneName' AND Club_ID = '$escapedClubID' ORDER BY CAST(SUBSTRING(Club_ID, 6) AS UNSIGNED) ASC";
     $result = mysqli_query($conn, $fetch);
     $volunteers = mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
@@ -113,7 +113,7 @@ if ($searched == true) {
     <div class="banner">
         <!-- <p><?php echo $escapedZoneName; ?></p> -->
         <p>
-            <?php echo $district . "</br> " . $regionName . " | " . $escapedZoneName; ?>
+            <?php echo   strtoupper("LIONS CLUB OF" . "</br>" . $volunteers[1]["Club_Name"]); ?>
         </p>
         <img src="img/volunteersBanner.jpg" alt="">
     </div>

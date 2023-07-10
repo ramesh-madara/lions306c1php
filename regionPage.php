@@ -98,16 +98,17 @@ if ($searched == true) {
   <a href="patients.php" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Patients</a>
   <a href="doctors.php" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Doctors</a> -->
 </div>
-<!-- <h2>Past appointment</h2> -->
-
-
-<!-- SEARCH -->
+<style>
+    .dist {
+        font-size: xx-large !important;
+    }
+</style>
 
 <body>
 
     <div class="banner">
         <!-- <p><?php echo $district; ?></p> -->
-        <p><?php echo $regionName; ?></p>
+        <p><?php echo "<span class='dist'>$district</span>" . " </br> " . "<span class = 'reg'>$regionName</span>"; ?></p>
         <img src="img/volunteersBanner.jpg" alt="">
     </div>
 

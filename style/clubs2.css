@@ -1,10 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@100&display=swap");
 body {
- /* background-color: aqua; */
- /* margin : -10px 0px 0px 0px; */
- /* overflow: hidden; */
+  overflow-x: hidden;
+  overflow: hidden;
 }
+html, body {
+  overflow-x: hidden !important;
+}
+
+
 .banner {
+  overflow-x: hidden;
+  overflow: hidden;
   min-width: 100vw;
   max-width: 100vw;
   background-color: rgb(0, 0, 0);
@@ -159,6 +165,8 @@ overflow: hidden;
   text-decoration: none;
 }
 .clubDetails {
+   overflow-x: hidden;
+  overflow: hidden;
   background-color: rgba(123, 31, 31, 0);
   min-width: 100%;
 }

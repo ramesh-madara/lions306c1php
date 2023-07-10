@@ -1,170 +1,321 @@
 <?php include 'inc/header.php'; ?>
-<link rel="stylesheet" type="text/css" href="style/index2.css">
+<link rel="stylesheet" type="text/css" href="style/clubs2.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/solid.min.js" integrity="sha512-apZ8JDL5kA1iqvafDdTymV4FWUlJd8022mh46oEMMd/LokNx9uVAzhHk5gRll+JBE6h0alB2Upd3m+ZDAofbaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- //Delete -->
-<?php
-// if (isset($_GET['id'])) {
-//   $id = $_GET['id'];
-//   $query = "DELETE FROM `appointment` WHERE appointmentNumber = '$id'";
-//   $run = mysqli_query($conn, $query);
-//   if ($run) {
-//     header('location:feedback.php');
-//   } else {
-//     echo "Error: " . mysqli_error($conn);
-//   }
-//   echo $_GET['id'];
-// }
-?>
 
+<?php
+//global
+$volunteers;
+$searched = false;
+$district = "District 306 C1";
+$region = "x";
+$zone = "x";
+$max = '6';
+$fetch = "SELECT DISTINCT  Region_Name from clubs WHERE District_Name = '$district' ORDER BY Region_Name ASC";
+$result = mysqli_query($conn, $fetch);
+$volunteersDefault = mysqli_fetch_all($result, MYSQLI_ASSOC);
+?>
+<?php
+
+
+function printt($reg, $zon)
+{
+
+  global $searched, $district, $zone;
+  global $region;
+  global $conn;
+  global $volunteers;
+  $region = $reg;
+  $zone = $zon;
+  $searchKey = '';
+  if ($searched == false | ($reg == "none" & $zon == "none")) {
+
+    $fetch = "SELECT DISTINCT  Region_Name from clubs WHERE District_Name = '$district' ORDER BY Region_Name ASC";
+  } else {
+    // if ($zone == "none") {
+    $zon = "Zone: 1";
+    $fetch = "SELECT DISTINCT  Region_Name from clubs WHERE District_Name = '$district' AND Region_Name = '$reg' AND Zone_Name = '$zon' ORDER BY Region_Name ASC";
+    // } else {
+    // $fetch = "SELECT DISTINCT  Region_Name from clubs WHERE District_Name = '$district' AND Region_Name = '$reg' and Zone_Name = '$zon' ORDER BY Region_Name ASC";
+    echo $zon;
+    // }
+  }
+  $result = mysqli_query($conn, $fetch);
+  $volunteers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
+printt("none", "none");
+
+// $Zone = "";
+?>
 <!--SEARCHED or NOT BITFLIP-->
 <?php
-$searchKey = '';
-$searched = false;
-if (isset($_POST['submit'])) {
 
-  if (empty($_POST['search'])) {
-    $nameErr = 'Search Key required!';
-  } else {
-    // $name = filter_var($_POST['name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $searchKey = filter_input(
-      INPUT_POST,
-      'search',
-      FILTER_SANITIZE_FULL_SPECIAL_CHARS
-    );
-  }
-  // THE BIT FLIP
-  $searched = true;
 
-  if (empty($_POST['search'])) {
-    $nameErr = 'Enter Key';
-  } else {
-    $Name = filter_input(
-      INPUT_POST,
-      'search',
-      FILTER_SANITIZE_FULL_SPECIAL_CHARS
-    );
-  }
-}
-if (isset($_POST['showall'])) {
-  $searched = false;
-}
-
-if ($searched == true) {
-  $fetch = "SELECT * from club1
-    WHERE name LIKE '%$searchKey%'
-    OR club LIKE '%$searchKey%' ";
-
-  $result = mysqli_query($conn, $fetch);
-  $volunteers = mysqli_fetch_all($result, MYSQLI_ASSOC);
-} else {
-  $fetch = 'SELECT * from club1';
-  $result = mysqli_query($conn, $fetch);
-  $volunteers = mysqli_fetch_all($result, MYSQLI_ASSOC);
-}
 ?>
 
 <?php if (empty($volunteers)) : ?>
   <!-- <p class="lead mt-3">There is no Volunteers</p> -->
 <?php endif; ?>
 
-<?php //foreach ($volunteers as $item): 
-?>
-<!-- <div class="card my-3 w-75">
-     <div class="card-body text-center">
-       <?php //echo $item['patientName']; 
-        ?>
-       <div class="text-secondary mt-2"> <?php //echo $item['NIC']; 
-                                          ?>
-          Doctor: <?php // echo $item['docName'];
-                  ?>
-  </div>
-     </div>
-   </div> -->
-<?php
-// echo '<h6>Welcome '.$_SESSION["username"].'</h6>';  
-// echo '<label><a class="text-danger " href="logout.php">Logout</a></label>';
-?>
 <div style="display: flex;">
-  <!-- <a href="feedback.php" class="btn btn-secondary btn-sm active" role="button" aria-pressed="true">Appointments</a>
-  <a href="patients.php" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Patients</a>
-  <a href="doctors.php" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Doctors</a> -->
 </div>
-<!-- <h2>Past appointment</h2> -->
-
-
-<!-- SEARCH -->
 
 <body>
 
   <div class="banner">
-    <p>OUR VOLUNTEERS</p>
+    <p>District: 306c1</p>
     <img src="img/volunteersBanner.jpg" alt="">
   </div>
 
   <div class="clubDetails">
-    <p class="clubNameUpper">LIONS CLUB OF YATINUWARA GREEN ELITE</p>
+    <p class="clubNameUpper">BROWSE THROUGH</p>
     <div class="details">
       <div class="upperSec">
-        <div class="sec1">
-          <span>Region: <span class="content">6A</span></span><br>
-          <span>Zone: <span class="content">3</span></span>
-        </div>
-        <div class="sec2">
-          <span>Reg. No.: <span class="content">123456</span></span><br>
-          <span>Chartered On: <span class="content">20-06-2022</span></span>
-        </div>
+
+        <div></div>
       </div>
-      <div class="lowerSec">
-        <p>Extended by: <span class="content">Lions Club of Kiribathkumbura</span></p><br>
-        <p>Extension Chairman: <span class="content">Lion Luxman Ullandupitiya</span></p><br>
-        <p>Guiding Lion: <span class="content">Lion Luxman Ullandupitiya</span></p><br>
-        <p>DG then in Office: <span class="content">DG Lion Amal Pussallage</span></p>
-      </div>
-      <div></div>
+
     </div>
+    <nav class="navbar navbar-light ">
+      <form method="POST" action="<?php echo htmlspecialchars(
+                                    $_SERVER['PHP_SELF']
+                                  ); ?>" class="mt-4 w-155" style="display: flex;">
+        <input name="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+        <!-- <button class="btn btn-outline-success " name="submit" type="submit">Search</button> -->
+        <input type="submit" name="submit" value="Search" class="btn btn-dark w-35">
+        <input type="submit" name="showall" value="Show all" class="btn btn-secondary w-25 text-center">
+      </form>
+    </nav>
 
-  </div>
-  <nav class="navbar navbar-light ">
-    <form method="POST" action="<?php echo htmlspecialchars(
-                                  $_SERVER['PHP_SELF']
-                                ); ?>" class="mt-4 w-155" style="display: flex;">
-      <input name="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
-      <!-- <button class="btn btn-outline-success " name="submit" type="submit">Search</button> -->
-      <input type="submit" name="submit" value="Search" class="btn btn-dark w-35">
-      <input type="submit" name="showall" value="Show all" class="btn btn-secondary w-25 text-center">
-    </form>
-  </nav>
 
-  <div class="volunteersOuter">
-    <!-- <tbody> -->
-    <?php foreach ($volunteers as $item) : ?>
-      <div class="volunteer">
-        <div class="outer">
-          <div class="imgOuter">
-            <img src="data:image/jpeg;base64,<?php echo base64_encode($item['profile_image']); ?>" height="150" class="img-thumnail" />
-          </div>
-          <div class="VolunteerDetailsOuter">
-            <div class="main">
-              <p class="position"><?php echo $item['district_position_1'] ?></p>
 
-              <p class="name">Lion <?php echo $item['name']; ?> </p>
-            </div>
+    <script>
+      function update(str) {
+        updateZones(str);
+        setRegion(str);
 
-            <div class="socialLinks">
-              <a class="fb"><i class="fa-brands fa-facebook-f"></i></a>
-              <a class="twitter"><i class="fa-brands fa-twitter"></i></a>
-              <a class="insta"><i class="fa-brands fa-instagram"></i></a>
-              <a class="in"><i class="fa-brands fa-linkedin-in"></i></a>
-              <a class="wtsapp" class=""><i class="fa-brands fa-whatsapp"></i></a>
-              <a class="email"><i class="fa-regular fa-envelope"></i></a>
-              <a href="volunteer.php?key=<?php echo $item['volunteer_code']; ?>" class="more"><i class="fa-solid fa-plus"></i></a>
+      }
 
-            </div>
+      // function setRegion(region) {
+      //   var xhr = new XMLHttpRequest();
+      //   xhr.open("POST", "clubs.php", true);
+      //   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      //   xhr.onreadystatechange = function() {
+      //     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      //       // Request completed successfully
+      //       console.log("<?php echo $region; ?>");
+      //       console.log(xhr.responseText);
+      //     }
+      //   };
+      //   xhr.send("region=" + encodeURIComponent(region));
+      //   var regionValue = "<?php echo $region; ?>";
+      //   console.log(regionValue);
+      // }
+
+      function updateZones(str) {
+
+
+        // console.log(str);
+        if (window.XMLHttpRequest) {
+          xmlhttp = new XMLHttpRequest();
+          // console.log(xmlhttp);
+        } else {
+          xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+          // console.log(xmlhttp);
+
+        }
+        xmlhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            // console.log(this.resposeText);
+            document.getElementById("zone").innerHTML = this.responseText;
+          }
+        }
+        xmlhttp.open("GET", "helper.php?value=" + str, true);
+        xmlhttp.send();
+        // console.log("<?php echo $region; ?>");
+      };
+
+      function updateClubs(zone) {
+        var region = document.getElementById("SelectA").value;
+        console.log(region);
+        console.log(zone);
+
+        if (window.XMLHttpRequest) {
+          xmlhttp = new XMLHttpRequest();
+        } else {
+          xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        xmlhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("clubs").innerHTML = this.responseText;
+          }
+        }
+
+        var url = "helper.php?region=" + (region) + "&zone=" + (zone);
+        console.log(url);
+        xmlhttp.open("GET", "helper.php?region=" + (region) + "&zone=" + (zone), true);
+        xmlhttp.send();
+      };
+    </script>
+
+
+
+    <div>
+      <style>
+        .hierarchy {
+          /* background-color: grey; */
+          width: 70vw;
+          /* display: flex; */
+        }
+
+        .reg {
+          display: flex;
+          gap: 35px;
+          flex-wrap: wrap;
+        }
+
+        .ded {
+          /* background-color: wheat; */
+          width: 250px;
+
+        }
+
+        tr {
+          display: flex;
+          /* align-items: flex-start; */
+        }
+
+        .clubCount p {
+          font-weight: bold;
+        }
+
+        a {
+          text-decoration: none;
+          color: black;
+        }
+
+        .regionDisplay:hover,
+        .zoneDisplay:hover,
+        .clubDisplay:hover {
+          text-decoration: underline !important;
+        }
+      </style>
+      <?php
+      if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Retrieve the selected region and zone values from the form
+        if ($_POST['selectedRegion'] == "none") {
+          $selectedRegion = "none";
+        } else {
+          $selectedRegion = $_POST['selectedRegion'];
+        }
+        if ($_POST['selectedZone'] == "none") {
+          $selectedZone = "none";
+        } else {
+          $selectedZone = $_POST['selectedZone'];
+        }
+        // $selectedRegion = $_POST['selectedRegion'];
+        // $selectedZone = $_POST['selectedZone'];
+        // echo $selectedRegion . $selectedZone;
+        $searched = true;
+
+        printt($selectedRegion, $selectedZone);
+        // Use the values as needed
+        // ...
+      }
+      ?>
+
+      <div class="hierarchy">
+        <div class="volunteersOuter">
+          <div id="select-container">
+            <form method="POST">
+              <select name="selectedRegion" id="SelectA" onchange="update(this.value)">
+                <option selected value="none">Select a Region</option>
+                <?php foreach ($volunteersDefault as $item) : ?>
+                  <option value="<?php echo $item['Region_Name']; ?>"><?php echo $item['Region_Name']; ?></option>
+                <?php endforeach; ?>
+              </select>
+              <!--Options for zone and clubs select menus are displayed by retrieving from the helper.php via update() and updatreClubs() function -->
+              <select name="selectedZone" id="zone" onchange="updateClubs(this.value)">
+                <option selected value="none">Select a Zone</option>
+              </select>
+              <select id="clubs">
+                <option disabled selected value="">Select a Club</option>
+              </select>
+              <input type="submit" value="Apply Filterss">
+            </form>
           </div>
         </div>
+
+        <?php foreach ($volunteers as $item) : ?>
+
+
+          <div>
+            <h1><a class="regionDisplay" href="regionPage.php?region=<?php echo $item['Region_Name']; ?>&district=<?php echo $district ?>"><?php echo $item['Region_Name']; ?></a></h1>
+          </div>
+          <?php
+          if ($region != "none") {
+            $regionName = $region;
+          } else {
+            $regionName = $item['Region_Name'];
+          }
+          if ($zone != "none") {
+            $zoneName = $zone;
+            $fetch2 = "SELECT DISTINCT Zone_Name FROM clubs WHERE District_Name = '$district' AND Region_Name = '$regionName' AND Zone_Name = '$zone' ORDER BY CAST(SUBSTRING(Zone_Name, 6) AS UNSIGNED) ASC ";
+          } else {
+            $fetch2 = "SELECT DISTINCT Zone_Name FROM clubs WHERE District_Name = '$district' AND Region_Name = '$regionName' ORDER BY CAST(SUBSTRING(Zone_Name, 6) AS UNSIGNED) ASC ";
+          }
+          // $regionName = $item['Region_Name'];
+          $result2 = mysqli_query($conn, $fetch2);
+          $volunteers2 = mysqli_fetch_all($result2, MYSQLI_ASSOC);
+          ?>
+          <div class="reg">
+            <?php foreach ($volunteers2 as $item2) : ?>
+              <div class="ded">
+                <!-- <span><?php echo $region; ?></span> -->
+                <h4><a class="zoneDisplay" href="zonePage.php?district=<?php echo $district  ?>&region=<?php echo $item['Region_Name']; ?>&zone=<?php echo $item2['Zone_Name']; ?>"><?php echo $item2['Zone_Name']; ?></a></h4>
+                <?php
+                if ($zone != "none") {
+                  $zoneName2 = $zone;
+                } else {
+                  $zoneName2 = $item2['Zone_Name'];
+                }
+                $zoneName2 = $item2['Zone_Name'];
+                $fetch3 = "SELECT DISTINCT Club_Name, Club_ID FROM clubs WHERE District_Name = '$district' AND Region_Name = '$regionName' AND Zone_Name = '$zoneName2' ORDER BY Club_Name ASC";
+                $result3 = mysqli_query($conn, $fetch3);
+                $clubs = mysqli_fetch_all($result3, MYSQLI_ASSOC);
+                ?>
+                <?php for ($i = 0; $i < count($clubs); $i++) {
+                ?>
+                  <table>
+                    <tr>
+                      <td>
+                        <div class="clubCount">
+                          <p><?php $count = $i + 1;
+                              echo $count . "."; ?></p>
+                        </div>
+                      </td>
+                      <td>
+                        <div>
+                          <!-- <span><?php echo $zone; ?></span> -->
+                          <p><a class="clubDisplay" href="clubPage.php?district=<?php echo $district  ?>&region=<?php echo $item['Region_Name']; ?>&zone=<?php echo $item2['Zone_Name']; ?>&clubID=<?php echo $clubs[$i]['Club_ID']; ?>"><?php echo $clubs[$i]['Club_Name']; ?></a></p>
+                        </div>
+
+                      </td>
+                    </tr>
+                  </table>
+                <?php } ?>
+              </div>
+            <?php endforeach; ?>
+          </div>
+
+
+
+        <?php endforeach; ?>
       </div>
-    <?php endforeach; ?>
-  </div>
+
+    </div>
 </body>
-<?php include 'inc/footer.php'; ?>
+<?php
+include 'inc/footer.php'; ?>
