@@ -299,7 +299,7 @@ printt("none", "none");
                       <td>
                         <div>
                           <!-- <span><?php echo $zone; ?></span> -->
-                          <p><a class="clubDisplay" href="clubPage.php?district=<?php echo $district  ?>&region=<?php echo $item['Region_Name']; ?>&zone=<?php echo $item2['Zone_Name']; ?>&clubID=<?php echo $clubs[$i]['Club_ID']; ?>"><?php echo $clubs[$i]['Club_Name']; ?></a></p>
+                          <p><a class="clubDisplay" href="clubPage.php?district=<?php echo $district  ?>&region=<?php echo $item['Region_Name']; ?>&zone=<?php echo $item2['Zone_Name']; ?>&clubID=<?php echo $clubs[$i]['Club_ID']; ?>&searchKey=<?php echo 'none' ?>"><?php echo $clubs[$i]['Club_Name']; ?></a></p>
                         </div>
 
                       </td>

@@ -23,26 +23,12 @@ $regionName =  trim($_GET['region'], "'");
 $district = trim($_GET['district'], "'");
 $zone = trim($_GET['zone'], "'");
 $clubID = trim($_GET['clubID'], "'");
-if (trim($_GET['searchKey'], "'") == 'none') {
-    $searchKey = 'none';
-} else {
-    $searched = true;
-    $searchKey = trim($_GET['searchKey'], "'");
-}
-
 $escapedDistrict = mysqli_real_escape_string($conn, $district); // Escape the district value
 $escapedRegionName = mysqli_real_escape_string($conn, $regionName); // Escape the region name value
 $escapedZoneName = mysqli_real_escape_string($conn, $zone); // Escape the zone name value
 $escapedClubID = mysqli_real_escape_string($conn, $clubID); // Escape the clubID  value
-$escapedSearchKey = mysqli_real_escape_string($conn, $searchKey); // Escape the clubID  value
-// echo $escapedSearchKey;
-
 // echo $escapedZoneName;
-if ($searchKey == 'none') {
-    echo 'nosearch';
-} else {
-    echo $searchKey;
-}
+$searchKey = '';
 $searched = false;
 if (isset($_POST['submit'])) {
 
@@ -74,19 +60,22 @@ if (isset($_POST['showall'])) {
     $searched = false;
 }
 
-if ($searchKey != 'none') {
-    echo $searchKey;
-    $fetch =
-        "SELECT * FROM c_1_members_new WHERE District_Name = '$escapedDistrict' AND Region_Name = '$escapedRegionName' AND Zone_Name = '$escapedZoneName' AND Club_ID = '$escapedClubID' AND First_Name LIKE '%$searchKey%'  ORDER BY CAST(SUBSTRING(Club_ID, 6) AS UNSIGNED) ASC";
-} else {
-    $fetch = "SELECT * FROM c_1_members_new WHERE District_Name = '$escapedDistrict' AND Region_Name = '$escapedRegionName' AND Zone_Name = '$escapedZoneName' AND Club_ID = '$escapedClubID' ORDER BY CAST(SUBSTRING(Club_ID, 6) AS UNSIGNED) ASC";
-}
-$result = mysqli_query($conn, $fetch);
-$volunteers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+if ($searched == true) {
+    // $fetchh = "SELECT * from club1
+    // WHERE name LIKE '%$searchKey%'
+    // OR club LIKE '%$searchKey%' ";
+    // $fetch
+    //     = "SELECT * FROM c_1_members_new WHERE District_Name = '$escapedDistrict' AND Region_Name = '$escapedRegionName' and First_Name LIKE '%$searchKey%'
+    // OR Club_Name LIKE '%$searchKey%' ORDER BY CAST(SUBSTRING(Zone_Name, 6) AS UNSIGNED) ASC";
 
-$fetchDef = "SELECT * FROM c_1_members_new WHERE District_Name = '$escapedDistrict' AND Region_Name = '$escapedRegionName' AND Zone_Name = '$escapedZoneName' AND Club_ID = '$escapedClubID' ORDER BY CAST(SUBSTRING(Club_ID, 6) AS UNSIGNED) ASC LIMIT 10";
-$resultDef = mysqli_query($conn, $fetchDef);
-$volunteersDef = mysqli_fetch_all($resultDef, MYSQLI_ASSOC);
+    // $result = mysqli_query($conn, $fetch);
+    // $volunteers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+} else {
+    $fetch =
+        "SELECT * FROM c_1_members_new WHERE District_Name = '$escapedDistrict' AND Region_Name = '$escapedRegionName' AND Zone_Name = '$escapedZoneName' AND Club_ID = '$escapedClubID' ORDER BY CAST(SUBSTRING(Club_ID, 6) AS UNSIGNED) ASC";
+    $result = mysqli_query($conn, $fetch);
+    $volunteers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
 ?>
 
 <?php if (empty($volunteers)) : ?>
@@ -130,7 +119,7 @@ $volunteersDef = mysqli_fetch_all($resultDef, MYSQLI_ASSOC);
     </div>
 
     <div class="clubDetails">
-        <p class="clubNameUpper"><?php echo   strtoupper("LIONS CLUB OF " .  $volunteersDef[1]["Club_Name"]); ?></p>
+        <p class="clubNameUpper"><?php echo   strtoupper("LIONS CLUB OF " .  $volunteers[1]["Club_Name"]); ?></p>
         <div class="details">
             <div class="upperSec">
                 <div class="sec1">
@@ -153,27 +142,15 @@ $volunteersDef = mysqli_fetch_all($resultDef, MYSQLI_ASSOC);
         </div>
 
     </div>
-    <script>
-        function updateSearchKey(key) {
-
-        }
-    </script>
-    <nav class="searchComponent ">
-        <!-- <form action="<?php echo htmlspecialchars(
-                                $_SERVER['PHP_SELF']
-                            ); ?>" class="mt-4 w-155" style="display: flex;"> -->
-        <input onchange="updateSearchKey(this.value)" name="search" id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
-        <!-- <button class="btn btn-outline-success " name="submit" type="submit">Search</button> -->
-        <!-- <input type="" name="submit" value="Search" class="btn btn-dark w-35"> -->
-        <!-- <input type="" name="showall" value="Show all" class="btn btn-secondary w-25 text-center"> -->
-        <a class="btn btn-dark w-35 search" onclick="this.href='clubPage.php?district=<?php echo $district  ?>&region=<?php echo $regionName; ?>&zone=<?php echo $zone; ?>&clubID=<?php echo $clubID; ?>&searchKey='+(document.getElementById('search').value ==''? 'none':document.getElementById('search').value)">
-            Search</a>
-        <!-- <a class="btn btn-dark w-35" onclick="this.href='clubPage.php?district=<?php echo $district  ?>&region=<?php echo $regionName; ?>&zone=<?php echo $zone; ?>&clubID=<?php echo $clubID; ?>&searchKey=<?php echo 'none'; ?>">
-            Show all</a> -->
-        <a class="btn btn-dark w-35 showAll" onclick="this.href='clubPage.php?district=<?php echo $district  ?>&region=<?php echo $regionName; ?>&zone=<?php echo $zone; ?>&clubID=<?php echo $clubID; ?>&searchKey=<?php echo 'none'; ?>'">
-            Show all</a>
-        <!-- </form> -->
-
+    <nav class="navbar navbar-light ">
+        <form method="POST" action="<?php echo htmlspecialchars(
+                                        $_SERVER['PHP_SELF']
+                                    ); ?>" class="mt-4 w-155" style="display: flex;">
+            <input name="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+            <!-- <button class="btn btn-outline-success " name="submit" type="submit">Search</button> -->
+            <input type="submit" name="submit" value="Search" class="btn btn-dark w-35">
+            <input type="submit" name="showall" value="Show all" class="btn btn-secondary w-25 text-center">
+        </form>
     </nav>
 
     <div class="volunteersOuter">

@@ -1,5 +1,32 @@
 @import url("https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@100&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Ysabeau+Office:wght@200&display=swap");
+::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 10px;
+  background-color: #f1f1f1;
+}
+html, body {
+  overflow-x: hidden !important;
+}
+
+/* Style for the scrollbar thumb */
+::-webkit-scrollbar {
+  width: 8px;
+  /* border-radius: 10px; */
+  background-color: #12238e;
+
+}
+
+/* Style for the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background-color: #ffe730;
+  border-radius: 10px;
+}
+
+/* Hover style for the scrollbar thumb */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #ffffff;
+}
 .memberOuterMost {
   /* margin-left: -10px; */
   /* margin-top: -10px; */

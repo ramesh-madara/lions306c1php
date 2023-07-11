@@ -1,5 +1,5 @@
 <?php include 'inc/header.php'; ?>
-<link rel="stylesheet" type="text/css" href="style/index2.css">
+<link rel="stylesheet" type="text/css" href="style/clubPage5.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/solid.min.js" integrity="sha512-apZ8JDL5kA1iqvafDdTymV4FWUlJd8022mh46oEMMd/LokNx9uVAzhHk5gRll+JBE6h0alB2Upd3m+ZDAofbaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- //Delete -->
@@ -149,39 +149,58 @@ if ($searched == true) {
     <div class="volunteersOuter">
         <!-- <tbody> -->
         <?php foreach ($volunteers as $item) : ?>
-            <div class="volunteer">
-                <div class="outer">
-                    <div class="imgOuter">
-                        <img src=" https://img.freepik.com/premium-photo/young-handsome-man-with-beard-isolated-keeping-arms-crossed-frontal-position_1368-132662.jpg" height="150" class="img-thumnail" />
+            <!-- <div class="volunteer"> -->
+            <div class="outer">
+                <div class="imgOuter">
+                    <img src=" https://img.freepik.com/premium-photo/young-handsome-man-with-beard-isolated-keeping-arms-crossed-frontal-position_1368-132662.jpg" height="150" class="img-thumnail" />
+                </div>
+                <div class="VolunteerDetailsOuter">
+                    <div class="main">
+                        <p class="position"><?php
+                                            if ($item['Title'] == "") {
+                                                echo "  <p></p>";
+                                            } else {
+                                                echo $item['Title'];
+                                            }
+                                            // }
+                                            ?></p>
+
+                        <p class="name">Lion <?php echo $item['First_Name'] . " " . $item['Last_Name']; ?> </p>
                     </div>
-                    <div class="VolunteerDetailsOuter">
-                        <div class="main">
-                            <p class="position"><?php
-                                                if ($item['Title'] == "") {
-                                                    echo "  <p></p>";
-                                                } else {
-                                                    echo $item['Title'];
-                                                }
-                                                // }
-                                                ?></p>
 
-                            <p class="name">Lion <?php echo $item['First_Name'] . " " . $item['Last_Name']; ?> </p>
-                        </div>
+                    <div class="socialLinks">
+                        <a class="fb"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a class="twitter"><i class="fa-brands fa-twitter"></i></a>
+                        <a class="insta"><i class="fa-brands fa-instagram"></i></a>
+                        <a class="in"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a class="wtsapp" class=""><i class="fa-brands fa-whatsapp"></i></a>
+                        <a class="email"><i class="fa-regular fa-envelope"></i></a>
+                        <a href="" class="more"><i class="fa-solid fa-plus"></i></a>
 
-                        <div class="socialLinks">
-                            <a class="fb"><i class="fa-brands fa-facebook-f"></i></a>
-                            <a class="twitter"><i class="fa-brands fa-twitter"></i></a>
-                            <a class="insta"><i class="fa-brands fa-instagram"></i></a>
-                            <a class="in"><i class="fa-brands fa-linkedin-in"></i></a>
-                            <a class="wtsapp" class=""><i class="fa-brands fa-whatsapp"></i></a>
-                            <a class="email"><i class="fa-regular fa-envelope"></i></a>
-                            <a href="" class="more"><i class="fa-solid fa-plus"></i></a>
-
-                        </div>
                     </div>
                 </div>
             </div>
+            <!-- </div> -->
         <?php endforeach; ?>
     </div>
+    <script>
+        // Get the first row items
+        const firstRowItems = document.querySelectorAll('.volunteersOuter > .outer:nth-child(-n+3)'); // Adjust the selector to target the items in the first row
+
+        // Get the maximum width of the first row items
+        let maxItemWidth = 0;
+        firstRowItems.forEach(item => {
+            const itemWidth = item.offsetWidth;
+            if (itemWidth > maxItemWidth) {
+                maxItemWidth = itemWidth;
+            }
+        });
+
+        // Set the same width for items in the last row
+        const lastRowItems = document.querySelectorAll('.volunteersOuter > .outer:nth-last-child(-n+3)'); // Adjust the selector to target the items in the last row
+        lastRowItems.forEach(item => {
+            item.style.width = maxItemWidth + 'px';
+        });
+    </script>
 </body>
 <?php include 'inc/footer.php'; ?>
