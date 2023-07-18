@@ -5,7 +5,8 @@
   border-radius: 10px;
   background-color: #f1f1f1;
 }
-html, body {
+html,
+body {
   overflow-x: hidden !important;
 }
 
@@ -14,7 +15,6 @@ html, body {
   width: 8px;
   /* border-radius: 10px; */
   background-color: #12238e;
-
 }
 
 /* Style for the scrollbar thumb */

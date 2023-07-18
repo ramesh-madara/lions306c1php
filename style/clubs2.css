@@ -3,19 +3,20 @@ body {
   overflow-x: hidden;
   overflow: hidden;
 }
-html, body {
+html,
+body {
   overflow-x: hidden !important;
 }
+/* Style for the scrollbar track */
 ::-webkit-scrollbar {
   width: 8px;
   /* border-radius: 10px; */
-  background-color: #12238e;
-
+  background-color: #424242;
 }
 
 /* Style for the scrollbar thumb */
 ::-webkit-scrollbar-thumb {
-  background-color: #ffe730;
+  background-color: rgb(183, 183, 183);
   border-radius: 10px;
 }
 
@@ -58,15 +59,14 @@ html, body {
 .volunteersOuter {
   /* display: none !important; */
   min-width: 100vw;
-overflow: hidden;
+  overflow: hidden;
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
   justify-content: space-between;
   /* padding: 0px 90px 0px 90px; */
-  /* background-color: rgba(25, 52, 230, 0.641); */
 }
-#SelectA{
+#SelectA {
   /* display:none ; */
 }
 
@@ -82,7 +82,7 @@ overflow: hidden;
   /* padding: 15px 0px 15px 0px; */
   transition: 0.2s;
   color: black;
-  background-color: rgba(0, 0, 0, 0.07);
+  background-color: rgba(0, 0, 0, 0.578);
 }
 .outer .imgOuter {
   display: flex;
@@ -111,7 +111,7 @@ overflow: hidden;
   padding: 10px;
   height: 200px;
 }
-.main{
+.main {
   min-height: 110px;
   max-height: 110px;
 }
@@ -149,8 +149,8 @@ overflow: hidden;
   text-decoration: none;
   margin: 0px;
 }
-.socialLinks a:hover{
-    scale:1.05;
+.socialLinks a:hover {
+  scale: 1.05;
 }
 .socialLinks a i {
   color: white;
@@ -165,23 +165,23 @@ overflow: hidden;
 .socialLinks .insta {
   background-color: rgb(213, 10, 98);
 }
-.socialLinks .in{
-    background-color: rgb(0, 126, 229);
+.socialLinks .in {
+  background-color: rgb(0, 126, 229);
 }
-.socialLinks .wtsapp{
-    background-color: rgb(24, 172, 24);
+.socialLinks .wtsapp {
+  background-color: rgb(24, 172, 24);
 }
-.socialLinks .email{
-    background-color: rgb(198, 31, 31);
+.socialLinks .email {
+  background-color: rgb(198, 31, 31);
 }
-.socialLinks .more{
-    background-color: grey;
+.socialLinks .more {
+  background-color: grey;
 }
 .volunteer {
   text-decoration: none;
 }
 .clubDetails {
-   overflow-x: hidden;
+  overflow-x: hidden;
   overflow: hidden;
   background-color: rgba(123, 31, 31, 0);
   min-width: 100%;
@@ -189,6 +189,8 @@ overflow: hidden;
 .clubDetails .clubNameUpper {
   font-family: "Anton", sans-serif;
   font-size: 3.5rem;
+  margin-bottom: -30px;
+  margin-top: 3px;
 }
 .clubDetails .details {
   /* font-family: 'Anton', sans-serif; */
@@ -222,39 +224,64 @@ overflow: hidden;
 .lowerSec p {
   margin: 0px;
 }
-.zone option{
-  color:black;
+.zone option {
+  color: black;
 }
-.regionNameOuter{
-  /* background-color: #9c707052; */
+.regionNameOuter {
+  background-color: #9c707052;
   min-width: 100vw;
   margin-top: 20px;
   display: flex;
   /* height: 90px; */
-  align-items:flex-end;
+  align-items: flex-end;
   background-color: aqua;
 }
-.regionName{
+.regionName {
   font-family: "Anton", sans-serif;
-  font-size:3.5rem  ;
+  font-size: 3.5rem;
   min-width: 100vw;
 }
-.zoneNameOuter{
-}
-.zoneName{
-  font-size:2rem  ;
- font-family: "Anton", sans-serif;
 
+.zoneName {
+  font-size: 2rem;
+  font-family: "Anton", sans-serif;
+}
+.select {
+  width: 200px;
+  height: 40px;
 }
 
-@media (max-width: 901px) {
+.selectSubmitBtn {
+  width: 200px;
+  height: 40px;
+  background-color: grey;
+  color: white;
+  border: solid 1px white ;
+  /* border: none; */
+}
+@media (max-width: 974px) {
   .volunteersOuter {
     /* justify-content: center; */
-
   }
   .clubDetails {
-  min-width: 100vw;
-  max-width: 100vw;
-  padding: 20px;
-}
+    min-width: 100vw;
+    max-width: 100vw;
+    padding: 20px;
+  }
+  .volunteersOuter #select-container form {
+    display: flex;
+    flex-direction: column;
+  }
+  .select {
+    width: 600px;
+    height: 40px;
+   max-width: 70vw;
+    margin-bottom: 5px;
+  }
+
+  .selectSubmitBtn {
+    height: 40px;
+    background-color: grey;
+    color: white;
+  }
 }

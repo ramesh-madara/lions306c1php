@@ -1,5 +1,5 @@
 <?php include 'inc/header.php'; ?>
-<link rel="stylesheet" type="text/css" href="style/clubPage5.css">
+<link rel="stylesheet" type="text/css" href="style/clubPage54.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/solid.min.js" integrity="sha512-apZ8JDL5kA1iqvafDdTymV4FWUlJd8022mh46oEMMd/LokNx9uVAzhHk5gRll+JBE6h0alB2Upd3m+ZDAofbaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- //Delete -->
@@ -19,16 +19,36 @@
 
 <!--SEARCHED or NOT BITFLIP-->
 <?php
-$regionName =  trim($_GET['region'], "'");
-$district = trim($_GET['district'], "'");
-$zone = trim($_GET['zone'], "'");
-$clubID = trim($_GET['clubID'], "'");
+$regionName = trim(filter_input(INPUT_GET, 'region', FILTER_SANITIZE_SPECIAL_CHARS));
+$district = trim(filter_input(INPUT_GET, 'district', FILTER_SANITIZE_SPECIAL_CHARS));
+$zone = trim(filter_input(INPUT_GET, 'zone', FILTER_SANITIZE_SPECIAL_CHARS));
+$clubID = trim(filter_input(INPUT_GET, 'clubID', FILTER_SANITIZE_SPECIAL_CHARS));
+
+// Apply additional validation if needed
+if (empty($regionName) || empty($district) || empty($zone) || empty($clubID)) {
+    // Handle the case when required parameters are missing
+    // Return an error message or redirect the user to an appropriate page
+}
+
+$searchKey = trim(filter_input(INPUT_GET, 'searchKey', FILTER_SANITIZE_SPECIAL_CHARS));
+$searched = ($searchKey !== 'none');
+
+// Continue with your code securely
+
+
 $escapedDistrict = mysqli_real_escape_string($conn, $district); // Escape the district value
 $escapedRegionName = mysqli_real_escape_string($conn, $regionName); // Escape the region name value
 $escapedZoneName = mysqli_real_escape_string($conn, $zone); // Escape the zone name value
 $escapedClubID = mysqli_real_escape_string($conn, $clubID); // Escape the clubID  value
+$escapedSearchKey = mysqli_real_escape_string($conn, $searchKey); // Escape the clubID  value
+// echo $escapedSearchKey;
+
 // echo $escapedZoneName;
-$searchKey = '';
+// if ($searchKey == 'none') {
+// echo 'nosearch';
+// } else {
+// echo $searchKey;
+// }
 $searched = false;
 if (isset($_POST['submit'])) {
 
@@ -41,7 +61,7 @@ if (isset($_POST['submit'])) {
             'search',
             FILTER_SANITIZE_FULL_SPECIAL_CHARS
         );
-        echo $searchKey;
+        // echo $searchKey;
     }
     // THE BIT FLIP
     $searched = true;
@@ -60,54 +80,27 @@ if (isset($_POST['showall'])) {
     $searched = false;
 }
 
-if ($searched == true) {
-    // $fetchh = "SELECT * from club1
-    // WHERE name LIKE '%$searchKey%'
-    // OR club LIKE '%$searchKey%' ";
-    // $fetch
-    //     = "SELECT * FROM c_1_members_new WHERE District_Name = '$escapedDistrict' AND Region_Name = '$escapedRegionName' and First_Name LIKE '%$searchKey%'
-    // OR Club_Name LIKE '%$searchKey%' ORDER BY CAST(SUBSTRING(Zone_Name, 6) AS UNSIGNED) ASC";
-
-    // $result = mysqli_query($conn, $fetch);
-    // $volunteers = mysqli_fetch_all($result, MYSQLI_ASSOC);
-} else {
+if ($searchKey != 'none') {
+    // echo $searchKey;
     $fetch =
-        "SELECT * FROM c_1_members_new WHERE District_Name = '$escapedDistrict' AND Region_Name = '$escapedRegionName' AND Zone_Name = '$escapedZoneName' AND Club_ID = '$escapedClubID' ORDER BY CAST(SUBSTRING(Club_ID, 6) AS UNSIGNED) ASC";
-    $result = mysqli_query($conn, $fetch);
-    $volunteers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        "SELECT * FROM c_1_members_new WHERE District_Name = '$escapedDistrict' AND Region_Name = '$escapedRegionName' AND Zone_Name = '$escapedZoneName' AND Club_ID = '$escapedClubID' AND (First_Name LIKE '%$searchKey%' or Last_Name LIKE '%$searchKey%') ORDER BY CAST(SUBSTRING(Club_ID, 6) AS UNSIGNED) ASC";
+} else {
+    $fetch = "SELECT * FROM c_1_members_new WHERE District_Name = '$escapedDistrict' AND Region_Name = '$escapedRegionName' AND Zone_Name = '$escapedZoneName' AND Club_ID = '$escapedClubID' ORDER BY CAST(SUBSTRING(Club_ID, 6) AS UNSIGNED) ASC";
 }
+$result = mysqli_query($conn, $fetch);
+$volunteers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+$fetchDef = "SELECT * FROM c_1_members_new WHERE District_Name = '$escapedDistrict' AND Region_Name = '$escapedRegionName' AND Zone_Name = '$escapedZoneName' AND Club_ID = '$escapedClubID' ORDER BY CAST(SUBSTRING(Club_ID, 6) AS UNSIGNED) ASC LIMIT 10";
+$resultDef = mysqli_query($conn, $fetchDef);
+$volunteersDef = mysqli_fetch_all($resultDef, MYSQLI_ASSOC);
 ?>
 
 <?php if (empty($volunteers)) : ?>
     <p class="lead mt-3">There is no Volunteers</p>
 <?php endif; ?>
 
-<?php //foreach ($volunteers as $item): 
-?>
-<!-- <div class="card my-3 w-75">
-     <div class="card-body text-center">
-       <?php //echo $item['patientName']; 
-        ?>
-       <div class="text-secondary mt-2"> <?php //echo $item['NIC']; 
-                                            ?>
-          Doctor: <?php // echo $item['docName'];
-                    ?>
-  </div>
-     </div>
-   </div> -->
-<?php
-// echo '<h6>Welcome '.$_SESSION["username"].'</h6>';  
-// echo '<label><a class="text-danger " href="logout.php">Logout</a></label>';
-?>
-<div style="display: flex;">
-    <!-- <a href="feedback.php" class="btn btn-secondary btn-sm active" role="button" aria-pressed="true">Appointments</a>
-  <a href="patients.php" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Patients</a>
-  <a href="doctors.php" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Doctors</a> -->
-</div>
-<!-- <h2>Past appointment</h2> -->
 
 
-<!-- SEARCH -->
 
 <body>
 
@@ -119,7 +112,7 @@ if ($searched == true) {
     </div>
 
     <div class="clubDetails">
-        <p class="clubNameUpper"><?php echo   strtoupper("LIONS CLUB OF " .  $volunteers[1]["Club_Name"]); ?></p>
+        <p class="clubNameUpper"><?php echo   strtoupper("LIONS CLUB OF " .  $volunteersDef[1]["Club_Name"]); ?></p>
         <div class="details">
             <div class="upperSec">
                 <div class="sec1">
@@ -133,30 +126,81 @@ if ($searched == true) {
                 </div>
             </div>
             <div class="lowerSec">
-                <p>Extended by: <span class="content">Lions Club of Kiribathkumbura</span></p><br>
-                <p>Extension Chairman: <span class="content">Lion Luxman Ullandupitiya</span></p><br>
-                <p>Guiding Lion: <span class="content">Lion Luxman Ullandupitiya</span></p><br>
-                <p>DG then in Office: <span class="content">DG Lion Amal Pussallage</span></p>
+                <div class="lowerSecDetails">
+                    <p>Extended by: <span class="content">Lions Club of Kiribathkumbura</span></p><br>
+                    <p>Extension Chairman: <span class="content">Lion Luxman Ullandupitiya</span></p><br>
+                    <p>Guiding Lion: <span class="content">Lion Luxman Ullandupitiya</span></p><br>
+                    <p>DG then in Office: <span class="content">DG Lion Amal Pussallage</span></p>
+                </div>
+                <div class="searchOuter">
+                    <nav class="searchComponent ">
+                        <!-- <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="mt-4 w-155" style="display: flex;"> -->
+                        <input name="search" id="search" class="form-control" type="search" placeholder="Enter Search key" aria-label="Search" onkeydown="if(event.keyCode==13) document.querySelector('.search').click()">
+                        <a class="btn btn-dark w-35 search" onclick="this.href='clubPage.php?district=<?php echo $district  ?>&region=<?php echo $regionName; ?>&zone=<?php echo $zone; ?>&clubID=<?php echo $clubID; ?>&searchKey='+(document.getElementById('search').value ==''? 'none':document.getElementById('search').value)">
+                            Search</a>
+                        <a class="btn btn-dark w-35 showAll" onclick="this.href='clubPage.php?district=<?php echo $district  ?>&region=<?php echo $regionName; ?>&zone=<?php echo $zone; ?>&clubID=<?php echo $clubID; ?>&searchKey=<?php echo 'none'; ?>'">
+                            Show all</a>
+
+                    </nav>
+                </div>
+
             </div>
-            <div></div>
         </div>
-
     </div>
-    <nav class="navbar navbar-light ">
-        <form method="POST" action="<?php echo htmlspecialchars(
-                                        $_SERVER['PHP_SELF']
-                                    ); ?>" class="mt-4 w-155" style="display: flex;">
-            <input name="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
-            <!-- <button class="btn btn-outline-success " name="submit" type="submit">Search</button> -->
-            <input type="submit" name="submit" value="Search" class="btn btn-dark w-35">
-            <input type="submit" name="showall" value="Show all" class="btn btn-secondary w-25 text-center">
-        </form>
-    </nav>
+    <script>
 
+    </script>
+    <!-- <nav class="searchComponent "> -->
+    <!-- <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="mt-4 w-155" style="display: flex;"> -->
+    <!-- <input name="search" id="search" class="form-control" type="search" placeholder="Enter Search key" aria-label="Search" onkeydown="if(event.keyCode==13) document.querySelector('.search').click()"> -->
+    <!-- <a class="btn btn-dark w-35 search" onclick="this.href='clubPage.php?district=<?php echo $district  ?>&region=<?php echo $regionName; ?>&zone=<?php echo $zone; ?>&clubID=<?php echo $clubID; ?>&searchKey='+(document.getElementById('search').value ==''? 'none':document.getElementById('search').value)"> -->
+    <!-- Search</a> -->
+    <!-- <a class="btn btn-dark w-35 showAll" onclick="this.href='clubPage.php?district=<?php echo $district  ?>&region=<?php echo $regionName; ?>&zone=<?php echo $zone; ?>&clubID=<?php echo $clubID; ?>&searchKey=<?php echo 'none'; ?>'"> -->
+    <!-- Show all</a> -->
+
+    <!-- </nav> -->
+    <?php
+    $titleArr = [
+        'clubpresident',
+        'clubfirstvicepresident',
+        'clubsecondvicepresident',
+        'clubsecretary',
+        'clubtreasurer',
+        'clubmembershipchairperson',
+        'clublcifcoordinator',
+        'clubservicechairperson',
+        'clubmarketingchairperson',
+        'clubdirector',
+        'clubmember'
+    ];
+    $string3 = $titleArr[0];
+    $string4 = "Club President";
+    function isSimilarIgnoringCaseAndSpace($string1, $string2)
+    {
+        // Remove spaces and convert to lowercase
+        $processedString1 = str_replace(' ', '', strtolower($string1));
+        $processedString2 = str_replace(' ', '', strtolower($string2));
+
+        // Sort the characters in the strings to ensure proper comparison
+        $sortedString1 = str_split($processedString1);
+        sort($sortedString1);
+        $sortedString2 = str_split($processedString2);
+        sort($sortedString2);
+
+        // Compare the sorted strings to check for similarity
+        return $sortedString1 === $sortedString2;
+    }
+    // echo isSimilarIgnoringCaseAndSpace($string3, $string4) . " 8";
+
+    ?>
     <div class="volunteersOuter">
-        <!-- <tbody> -->
+
         <?php foreach ($volunteers as $item) : ?>
-            <!-- <div class="volunteer"> -->
+            <?php
+            $titles = explode("-", $item['Title']);
+
+            ?>
+
             <div class="outer">
                 <div class="imgOuter">
                     <img src=" https://img.freepik.com/premium-photo/young-handsome-man-with-beard-isolated-keeping-arms-crossed-frontal-position_1368-132662.jpg" height="150" class="img-thumnail" />
@@ -165,14 +209,35 @@ if ($searched == true) {
                     <div class="main">
                         <p class="position"><?php
                                             if ($item['Title'] == "") {
-                                                echo "  <p></p>";
+                                                $title = "Club Member";
                                             } else {
-                                                echo $item['Title'];
+                                                $titleArr = explode("-", $item['Title']);
+                                                if (count($titleArr) > 1) {
+                                                    $title = $titleArr[0] . ", " . $titleArr[1];
+                                                } else {
+                                                    $title = $titleArr[0];
+                                                }
                                             }
+                                            echo $title;
                                             // }
                                             ?></p>
 
-                        <p class="name">Lion <?php echo $item['First_Name'] . " " . $item['Last_Name']; ?> </p>
+                        <p class="name">LION <?php
+                                                $firstNameArr = explode(" ", $item['First_Name']);
+                                                if (count($firstNameArr) > 1) {
+                                                    for ($i = 0; $i < count($firstNameArr); $i++) {
+                                                        $subStr = strtoupper($firstNameArr[$i]);
+                                                        if (strlen($subStr) != 0) {
+                                                            echo $subStr[0] . ". ";
+                                                        }
+                                                    }
+                                                } else {
+                                                    echo strtoupper($item['First_Name']) . " ";
+                                                }
+                                                echo  strtoupper($item['Last_Name']);
+
+                                                // echo $item['First_Name'] . " ";
+                                                ?> </p>
                     </div>
 
                     <div class="socialLinks">
@@ -191,23 +256,24 @@ if ($searched == true) {
         <?php endforeach; ?>
     </div>
     <script>
-        // Get the first row items
-        const firstRowItems = document.querySelectorAll('.volunteersOuter > .outer:nth-child(-n+3)'); // Adjust the selector to target the items in the first row
+        // // Get the first row items
+        // const firstRowItems = document.querySelectorAll('.volunteersOuter > .outer:nth-child(-n+3)'); // Adjust the selector to target the items in the first row
 
-        // Get the maximum width of the first row items
-        let maxItemWidth = 0;
-        firstRowItems.forEach(item => {
-            const itemWidth = item.offsetWidth;
-            if (itemWidth > maxItemWidth) {
-                maxItemWidth = itemWidth;
-            }
-        });
+        // // Get the maximum width of the first row items
+        // let maxItemWidth = 0;
+        // firstRowItems.forEach(item => {
+        //     const itemWidth = item.offsetWidth;
+        //     if (itemWidth > maxItemWidth) {
+        //         maxItemWidth = itemWidth;
+        //     }
+        // });
 
-        // Set the same width for items in the last row
-        const lastRowItems = document.querySelectorAll('.volunteersOuter > .outer:nth-last-child(-n+3)'); // Adjust the selector to target the items in the last row
-        lastRowItems.forEach(item => {
-            item.style.width = maxItemWidth + 'px';
-        });
+        // // Set the same width for items in the last row
+        // const lastRowItems = document.querySelectorAll('.volunteersOuter > .outer:nth-last-child(-n+3)'); // Adjust the selector to target the items in the last row
+        // lastRowItems.forEach(item => {
+        //     item.style.width = maxItemWidth + 'px';
+        // });
     </script>
+
 </body>
 <?php include 'inc/footer.php'; ?>

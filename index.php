@@ -64,12 +64,12 @@ printt("none", "none");
 <body>
 
   <div class="banner">
-    <p>District: 306c1</p>
+    <p>Our District</p>
     <img src="img/volunteersBanner.jpg" alt="">
   </div>
 
   <div class="clubDetails">
-    <p class="clubNameUpper">BROWSE THROUGH</p>
+    <p class="clubNameUpper"><?php echo strtoupper("LIONS INTERNATIONAL " . $district)  ?></p>
     <div class="details">
       <div class="upperSec">
 
@@ -83,8 +83,8 @@ printt("none", "none");
                                   ); ?>" class="mt-4 w-155" style="display: flex;">
         <input name="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
         <!-- <button class="btn btn-outline-success " name="submit" type="submit">Search</button> -->
-        <input type="submit" name="submit" value="Search" class="btn btn-dark w-35">
-        <input type="submit" name="showall" value="Show all" class="btn btn-secondary w-25 text-center">
+        <input type="submit" name="submit" value="Search" class="search">
+        <input type="submit" name="showall" value="Show all" class="showall">
       </form>
     </nav>
 
@@ -164,22 +164,55 @@ printt("none", "none");
 
     <div>
       <style>
+        .navbar form {
+          display: flex;
+          gap: 5px;
+        }
+
+        .search,
+        .showall {
+          width: 150px;
+          height: 40px;
+          background-color: black;
+          color: white;
+          border: 1px solid white;
+        }
+
+        .showall {
+          background-color: grey;
+
+        }
+
+        .regionDisplay {
+          font-family: "Anton", sans-serif;
+        }
+
+        .zoneDisplay {
+          font-family: "Anton", sans-serif;
+          font-size: 2.0rem;
+        }
+
+        .clubDisplay {
+          font-weight: 600;
+        }
+
         .hierarchy {
-          /* background-color: grey; */
-          width: 70vw;
-          /* display: flex; */
+          width: 80vw;
+        }
+
+        .volunteersOuter {
+          margin: 10px 0px 10px 0px;
         }
 
         .reg {
           display: flex;
-          gap: 35px;
+          gap: 25px;
           flex-wrap: wrap;
         }
 
-        .ded {
-          /* background-color: wheat; */
-          width: 250px;
 
+        .ded {
+          width: 250px;
         }
 
         tr {
@@ -204,7 +237,6 @@ printt("none", "none");
       </style>
       <?php
       if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Retrieve the selected region and zone values from the form
         if ($_POST['selectedRegion'] == "none") {
           $selectedRegion = "none";
         } else {
@@ -215,14 +247,9 @@ printt("none", "none");
         } else {
           $selectedZone = $_POST['selectedZone'];
         }
-        // $selectedRegion = $_POST['selectedRegion'];
-        // $selectedZone = $_POST['selectedZone'];
-        // echo $selectedRegion . $selectedZone;
         $searched = true;
 
         printt($selectedRegion, $selectedZone);
-        // Use the values as needed
-        // ...
       }
       ?>
 
@@ -230,20 +257,20 @@ printt("none", "none");
         <div class="volunteersOuter">
           <div id="select-container">
             <form method="POST">
-              <select name="selectedRegion" id="SelectA" onchange="update(this.value)">
+              <select class="regSelect select" name="selectedRegion" id="SelectA" onchange="update(this.value)">
                 <option selected value="none">Select a Region</option>
                 <?php foreach ($volunteersDefault as $item) : ?>
                   <option value="<?php echo $item['Region_Name']; ?>"><?php echo $item['Region_Name']; ?></option>
                 <?php endforeach; ?>
               </select>
               <!--Options for zone and clubs select menus are displayed by retrieving from the helper.php via update() and updatreClubs() function -->
-              <select name="selectedZone" id="zone" onchange="updateClubs(this.value)">
+              <select class="zonSelect select" name="selectedZone" id="zone" onchange="updateClubs(this.value)">
                 <option selected value="none">Select a Zone</option>
               </select>
-              <select id="clubs">
+              <select class="clubSelect select" id="clubs">
                 <option disabled selected value="">Select a Club</option>
               </select>
-              <input type="submit" value="Apply Filterss">
+              <input class="selectSubmitBtn" type="submit" value="Apply Filterss">
             </form>
           </div>
         </div>
@@ -252,7 +279,7 @@ printt("none", "none");
 
 
           <div>
-            <h1><a class="regionDisplay" href="regionPage.php?region=<?php echo $item['Region_Name']; ?>&district=<?php echo $district ?>"><?php echo $item['Region_Name']; ?></a></h1>
+            <h1><a class="regionDisplay" href="regionPage.php?region=<?php echo $item['Region_Name']; ?>&district=<?php echo $district ?>"><?php echo strtoupper($item['Region_Name']); ?></a></h1>
           </div>
           <?php
           if ($region != "none") {
@@ -274,7 +301,7 @@ printt("none", "none");
             <?php foreach ($volunteers2 as $item2) : ?>
               <div class="ded">
                 <!-- <span><?php echo $region; ?></span> -->
-                <h4><a class="zoneDisplay" href="zonePage.php?district=<?php echo $district  ?>&region=<?php echo $item['Region_Name']; ?>&zone=<?php echo $item2['Zone_Name']; ?>"><?php echo $item2['Zone_Name']; ?></a></h4>
+                <h4><a class="zoneDisplay" href="zonePage.php?district=<?php echo $district  ?>&region=<?php echo $item['Region_Name']; ?>&zone=<?php echo $item2['Zone_Name']; ?>"><?php echo strtoupper($item2['Zone_Name']); ?></a></h4>
                 <?php
                 if ($zone != "none") {
                   $zoneName2 = $zone;
@@ -299,7 +326,7 @@ printt("none", "none");
                       <td>
                         <div>
                           <!-- <span><?php echo $zone; ?></span> -->
-                          <p><a class="clubDisplay" href="clubPage.php?district=<?php echo $district  ?>&region=<?php echo $item['Region_Name']; ?>&zone=<?php echo $item2['Zone_Name']; ?>&clubID=<?php echo $clubs[$i]['Club_ID']; ?>&searchKey=<?php echo 'none' ?>"><?php echo $clubs[$i]['Club_Name']; ?></a></p>
+                          <p><a class="clubDisplay" href="clubPage.php?district=<?php echo $district  ?>&region=<?php echo $item['Region_Name']; ?>&zone=<?php echo $item2['Zone_Name']; ?>&clubID=<?php echo $clubs[$i]['Club_ID']; ?>&searchKey=<?php echo 'none' ?>"><?php echo strtoupper($clubs[$i]['Club_Name']); ?></a></p>
                         </div>
 
                       </td>
