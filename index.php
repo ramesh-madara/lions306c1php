@@ -33,12 +33,14 @@ function printt($reg, $zon)
 
     $fetch = "SELECT DISTINCT  Region_Name from clubs WHERE District_Name = '$district' ORDER BY Region_Name ASC";
   } else {
-    // if ($zone == "none") {
-    $zon = "Zone: 1";
-    $fetch = "SELECT DISTINCT  Region_Name from clubs WHERE District_Name = '$district' AND Region_Name = '$reg' AND Zone_Name = '$zon' ORDER BY Region_Name ASC";
+    if ($reg != "none") {
+      $fetch = "SELECT DISTINCT  Region_Name from clubs WHERE District_Name = '$district' AND Region_Name = '$reg' AND Zone_Name = '$zon' ORDER BY Region_Name ASC";
+    }
+    // $zon = "Zone: 1";
+    $fetch = "SELECT DISTINCT  Region_Name from clubs WHERE District_Name = '$district' AND Region_Name = '$reg'  ORDER BY Region_Name ASC";
     // } else {
     // $fetch = "SELECT DISTINCT  Region_Name from clubs WHERE District_Name = '$district' AND Region_Name = '$reg' and Zone_Name = '$zon' ORDER BY Region_Name ASC";
-    echo $zon;
+    // echo $zon;
     // }
   }
   $result = mysqli_query($conn, $fetch);

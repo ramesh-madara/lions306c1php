@@ -32,7 +32,7 @@ if (isset($_GET["region"]) && isset($_GET["zone"])) {
         echo "<option  disabled selected >" . "Select a Club"  . "</option>";
 
         while ($rows = mysqli_fetch_assoc($result)) {
-            echo "<option>" . $rows["Club_Name"]  . "</option>";
+            echo "<option>" . strtoupper($rows["Club_Name"])   . "</option>";
         }
         // echo "</select>";
     }

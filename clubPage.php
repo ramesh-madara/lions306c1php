@@ -23,6 +23,10 @@ $regionName = trim(filter_input(INPUT_GET, 'region', FILTER_SANITIZE_SPECIAL_CHA
 $district = trim(filter_input(INPUT_GET, 'district', FILTER_SANITIZE_SPECIAL_CHARS));
 $zone = trim(filter_input(INPUT_GET, 'zone', FILTER_SANITIZE_SPECIAL_CHARS));
 $clubID = trim(filter_input(INPUT_GET, 'clubID', FILTER_SANITIZE_SPECIAL_CHARS));
+// echo $regionName;
+// echo $district;
+// echo $zone;
+// echo $clubID;
 
 // Apply additional validation if needed
 if (empty($regionName) || empty($district) || empty($zone) || empty($clubID)) {
@@ -37,6 +41,7 @@ $searched = ($searchKey !== 'none');
 
 
 $escapedDistrict = mysqli_real_escape_string($conn, $district); // Escape the district value
+// echo $escapedDistrict;
 $escapedRegionName = mysqli_real_escape_string($conn, $regionName); // Escape the region name value
 $escapedZoneName = mysqli_real_escape_string($conn, $zone); // Escape the zone name value
 $escapedClubID = mysqli_real_escape_string($conn, $clubID); // Escape the clubID  value
@@ -89,6 +94,36 @@ if ($searchKey != 'none') {
 }
 $result = mysqli_query($conn, $fetch);
 $volunteers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+echo count($volunteers);
+$titleArrPre = [
+    'Club President',
+    'Club First Vice President',
+    'Club Second Vice President',
+    'Club Secretary',
+    'Club Treasurer',
+    'Club Membership Chairperson',
+    'Club LCIF Coordinator',
+    'Club Service Chairperson',
+    'Club Marketing Chairperson',
+    'Club Director',
+    // 'Club Member'
+];
+// $arr = [];
+// $titleArr2 = explode("-", $volunteers[18]['Title']);
+// echo count($titleArr2);
+// // echo $titleArr2[0];
+// foreach ($titleArrPre as $u) {
+//     for ($v = 0; $v < count($titleArr2); $v++) {
+//         if ($titleArr2[$v] == $u & strlen($titleArr2[$v]) != 0) {
+//             $arr[$v] = $u;
+//         }
+//     }
+// }
+
+// foreach ($arr as $ar) {
+//     echo $ar . ', ';
+// }
+// echo ($titleArr2[1]);
 
 $fetchDef = "SELECT * FROM c_1_members_new WHERE District_Name = '$escapedDistrict' AND Region_Name = '$escapedRegionName' AND Zone_Name = '$escapedZoneName' AND Club_ID = '$escapedClubID' ORDER BY CAST(SUBSTRING(Club_ID, 6) AS UNSIGNED) ASC LIMIT 10";
 $resultDef = mysqli_query($conn, $fetchDef);
@@ -150,15 +185,7 @@ $volunteersDef = mysqli_fetch_all($resultDef, MYSQLI_ASSOC);
     <script>
 
     </script>
-    <!-- <nav class="searchComponent "> -->
-    <!-- <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="mt-4 w-155" style="display: flex;"> -->
-    <!-- <input name="search" id="search" class="form-control" type="search" placeholder="Enter Search key" aria-label="Search" onkeydown="if(event.keyCode==13) document.querySelector('.search').click()"> -->
-    <!-- <a class="btn btn-dark w-35 search" onclick="this.href='clubPage.php?district=<?php echo $district  ?>&region=<?php echo $regionName; ?>&zone=<?php echo $zone; ?>&clubID=<?php echo $clubID; ?>&searchKey='+(document.getElementById('search').value ==''? 'none':document.getElementById('search').value)"> -->
-    <!-- Search</a> -->
-    <!-- <a class="btn btn-dark w-35 showAll" onclick="this.href='clubPage.php?district=<?php echo $district  ?>&region=<?php echo $regionName; ?>&zone=<?php echo $zone; ?>&clubID=<?php echo $clubID; ?>&searchKey=<?php echo 'none'; ?>'"> -->
-    <!-- Show all</a> -->
 
-    <!-- </nav> -->
     <?php
     $titleArr = [
         'Club President',
@@ -166,6 +193,7 @@ $volunteersDef = mysqli_fetch_all($resultDef, MYSQLI_ASSOC);
         'Club Second Vice President',
         'Club Secretary',
         'Club Treasurer',
+        'Club Administrator',
         'Club Membership Chairperson',
         'Club LCIF Coordinator',
         'Club Service Chairperson',
@@ -173,129 +201,144 @@ $volunteersDef = mysqli_fetch_all($resultDef, MYSQLI_ASSOC);
         'Club Director',
         // 'Club Member'
     ];
+    function printMember($item)
+    {
+        global $titleArr;
+        $title = "";
+
+        echo '<div class="outer">';
+        echo '<div class="imgOuter">';
+        echo '<img src="https://img.freepik.com/premium-photo/young-handsome-man-with-beard-isolated-keeping-arms-crossed-frontal-position_1368-132662.jpg" height="150" class="img-thumnail" />';
+        echo '</div>';
+        echo '<div class="VolunteerDetailsOuter">';
+        echo '<div class="main">';
+        if ($item['Title'] == "") {
+            $title = "Club Member";
+        } else {
+            $titleArrTemp = explode("-", $item['Title']);
+            if (count($titleArrTemp) > 1) {
+                $arr = [];
+                // echo count($titleArrTemp);
+                // echo $titleArrTemp[0];
+                foreach ($titleArr as $u) {
+                    for ($v = 0; $v < count($titleArrTemp); $v++) {
+                        if ($titleArrTemp[$v] == $u & strlen($titleArrTemp[$v]) > 0) {
+                            // $arr[$v] = $u;
+                            $arr[$v] = $titleArrTemp[$v];
+                        }
+                    }
+                }
+                $arr2 = [];
+
+                $w = [1, 2, 3, 4];
+                $w2 = [1, 2, 3, 4, 5, 6];
+                $diffArr  = array_diff($titleArrTemp, $arr);
+                $arr2 = array_merge($arr2, $diffArr);
+                if (count($arr2) > 0) {
+                    if (strlen($arr2[0]) > 1) {
+                        $title = implode(", ", $arr) . ", " . implode(", ", $arr2);
+                    }
+                } else {
+                    $title = implode(", ", $arr);
+                }
+                // foreach ($arr as $ar) {
+                //     // $title = $title . $ar . ', ';
+                //     // echo $ar . "|";
+                // }
+                // foreach ($arr as $key => $ar) {
+                //     // $title = $title . "Index: " . $key . ", Value: " . $ar . ', ';
+
+                //     $title = $title . $ar . ', ';
+                // }
+
+
+
+                // $title = $titleArrTemp[0] . ", " . $titleArrTemp[1];
+            } else {
+                $title = $titleArrTemp[0];
+            }
+        }
+        echo '<p class="position">' . $title . '</p>';
+        echo '<p class="name">LION ';
+        $firstNameArr = explode(" ", $item['First_Name']);
+        if (count($firstNameArr) > 1) {
+            for ($i = 0; $i < count($firstNameArr); $i++) {
+                $subStr = strtoupper($firstNameArr[$i]);
+                if (strlen($subStr) != 0) {
+                    echo $subStr[0] . ". ";
+                }
+            }
+        } else {
+            echo strtoupper($item['First_Name']) . " ";
+        }
+        echo strtoupper($item['Last_Name']);
+        echo '</p>';
+        echo '</div>';
+        echo '<div class="socialLinks">';
+        echo '<a class="fb"><i class="fa-brands fa-facebook-f"></i></a>';
+        echo '<a class="twitter"><i class="fa-brands fa-twitter"></i></a>';
+        echo '<a class="insta"><i class="fa-brands fa-instagram"></i></a>';
+        echo '<a class="in"><i class="fa-brands fa-linkedin-in"></i></a>';
+        echo '<a class="wtsapp" class=""><i class="fa-brands fa-whatsapp"></i></a>';
+        echo '<a class="email"><i class="fa-regular fa-envelope"></i></a>';
+        echo '<a href="" class="more"><i class="fa-solid fa-plus"></i></a>';
+        echo '</div>';
+        echo '</div>';
+        echo '</div>';
+    }
+
+    function printMemberTitled($item, $memTitle, $title3)
+    {
+
+        if ($memTitle == $title3) {
+            printMember($item);
+        }
+    }
 
     ?>
     <div class="volunteersOuter">
 
         <?php
-        // $titles = explode("-", $item['Title']);
+        $lastMemID = "";
         foreach ($titleArr as $title3) {
 
             foreach ($volunteers as $item) {
 
                 if ($item["Title"] != null) {
                     $memTitles =  explode("-", $item["Title"]);
-                    // echo $item['First_Name'] . " " . strlen($memTitle) . $memTitle  . "</br>";
+                    // echo 88;
                     foreach ($memTitles as $memTitle) {
+                        if ($item["Member_ID"] != $lastMemID) {
 
-                        if ($memTitle == $title3) {
-                            echo '<div class="outer">';
-                            echo '<div class="imgOuter">';
-                            echo '<img src="https://img.freepik.com/premium-photo/young-handsome-man-with-beard-isolated-keeping-arms-crossed-frontal-position_1368-132662.jpg" height="150" class="img-thumnail" />';
-                            echo '</div>';
-                            echo '<div class="VolunteerDetailsOuter">';
-                            echo '<div class="main">';
-                            if ($item['Title'] == "") {
-                                $title = "Club Member";
-                            } else {
-                                $titleArr = explode("-", $item['Title']);
-                                if (count($titleArr) > 1) {
-                                    $title = $titleArr[0] . ", " . $titleArr[1];
-                                } else {
-                                    $title = $titleArr[0];
-                                }
-                            }
-                            echo '<p class="position">' . $title . '</p>';
-                            echo '<p class="name">LION ';
-                            $firstNameArr = explode(" ", $item['First_Name']);
-                            if (count($firstNameArr) > 1) {
-                                for ($i = 0; $i < count($firstNameArr); $i++) {
-                                    $subStr = strtoupper($firstNameArr[$i]);
-                                    if (strlen($subStr) != 0) {
-                                        echo $subStr[0] . ". ";
-                                    }
-                                }
-                            } else {
-                                echo strtoupper($item['First_Name']) . " ";
-                            }
-                            echo strtoupper($item['Last_Name']);
-                            echo '</p>';
-                            echo '</div>';
-                            echo '<div class="socialLinks">';
-                            echo '<a class="fb"><i class="fa-brands fa-facebook-f"></i></a>';
-                            echo '<a class="twitter"><i class="fa-brands fa-twitter"></i></a>';
-                            echo '<a class="insta"><i class="fa-brands fa-instagram"></i></a>';
-                            echo '<a class="in"><i class="fa-brands fa-linkedin-in"></i></a>';
-                            echo '<a class="wtsapp" class=""><i class="fa-brands fa-whatsapp"></i></a>';
-                            echo '<a class="email"><i class="fa-regular fa-envelope"></i></a>';
-                            echo '<a href="" class="more"><i class="fa-solid fa-plus"></i></a>';
-                            echo '</div>';
-                            echo '</div>';
-                            echo '</div>';
+                            printMemberTitled($item, $memTitle, $title3);
+                            $lastMemID = $item["Member_ID"];
                         }
                     }
                 }
-                // echo    "------" . "</br>";
             }
-
-
-            // foreach ($titleArr as $title3) {
-
-            //     if ($item["Title"] == $title3) {
-            //         echo $item['Last_Name'] . " " . $title3 . "</br>";
-            //     }
-            // }
         }
+        // foreach ($volunteers as $item) {
+        //     $memTitlesOther =  explode("-", $item["Title"]);
+        //     $othersExists = false;
+        //     foreach ($titleArr as $title) {
+        //         foreach ($memTitlesOther as $other) {
+        //             if ($item["Title"] != null & $title != $other) {
+        //                 $othersExists = true;
+        //             }
+        //         }
+        //     }
+
+        //     if ($othersExists == true) {
+
+        //         printMember($item);
+        //     }
+        // }
         foreach ($volunteers as $item) {
 
             if ($item["Title"] == null) {
-                // echo $item['First_Name'] . " " . strlen($memTitle) . $memTitle  . "</br>";
 
-                echo '<div class="outer">';
-                echo '<div class="imgOuter">';
-                echo '<img src="https://img.freepik.com/premium-photo/young-handsome-man-with-beard-isolated-keeping-arms-crossed-frontal-position_1368-132662.jpg" height="150" class="img-thumnail" />';
-                echo '</div>';
-                echo '<div class="VolunteerDetailsOuter">';
-                echo '<div class="main">';
-                if ($item['Title'] == "") {
-                    $title = "Club Member";
-                } else {
-                    $titleArr = explode("-", $item['Title']);
-                    if (count($titleArr) > 1) {
-                        $title = $titleArr[0] . ", " . $titleArr[1];
-                    } else {
-                        $title = $titleArr[0];
-                    }
-                }
-                echo '<p class="position">' . $title . '</p>';
-                echo '<p class="name">LION ';
-                $firstNameArr = explode(" ", $item['First_Name']);
-                if (count($firstNameArr) > 1) {
-                    for ($i = 0; $i < count($firstNameArr); $i++) {
-                        $subStr = strtoupper($firstNameArr[$i]);
-                        if (strlen($subStr) != 0) {
-                            echo $subStr[0] . ". ";
-                        }
-                    }
-                } else {
-                    echo strtoupper($item['First_Name']) . " ";
-                }
-                echo strtoupper($item['Last_Name']);
-                echo '</p>';
-                echo '</div>';
-                echo '<div class="socialLinks">';
-                echo '<a class="fb"><i class="fa-brands fa-facebook-f"></i></a>';
-                echo '<a class="twitter"><i class="fa-brands fa-twitter"></i></a>';
-                echo '<a class="insta"><i class="fa-brands fa-instagram"></i></a>';
-                echo '<a class="in"><i class="fa-brands fa-linkedin-in"></i></a>';
-                echo '<a class="wtsapp" class=""><i class="fa-brands fa-whatsapp"></i></a>';
-                echo '<a class="email"><i class="fa-regular fa-envelope"></i></a>';
-                echo '<a href="" class="more"><i class="fa-solid fa-plus"></i></a>';
-                echo '</div>';
-                echo '</div>';
-                echo '</div>';
+                printMember($item);
             }
-            // echo    "------" . "</br>";
         }
         ?>
 

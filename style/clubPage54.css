@@ -144,7 +144,7 @@ body {
 .outer:hover {
   background-color: rgb(220, 224, 224);
   transition: 0.2s;
-  scale: 1.005;
+  /* scale: 1.005; */
 }
 .outer .VolunteerDetailsOuter {
   display: flex;
@@ -170,8 +170,9 @@ body {
 }
 .outer .VolunteerDetailsOuter .main .position {
   /* background-color: rgba(0, 0, 255, 0.135); */
+  height: 45px;
   margin: 0px;
-  color: black;
+  color: rgb(0, 0, 0);
   margin-top: -10px;
   margin-bottom: 5px;
 }
@@ -202,7 +203,6 @@ body {
 }
 .socialLinks a:hover {
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.645);
-  scale: 1.05;
   border-radius: 0px;
   transition: 0.2s;
 }
