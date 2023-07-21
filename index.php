@@ -16,6 +16,8 @@ $fetch = "SELECT DISTINCT  Region_Name from clubs WHERE District_Name = '$distri
 $result = mysqli_query($conn, $fetch);
 $volunteersDefault = mysqli_fetch_all($result, MYSQLI_ASSOC);
 ?>
+
+
 <?php
 
 
@@ -187,6 +189,7 @@ printt("none", "none");
 
         .regionDisplay {
           font-family: "Anton", sans-serif;
+          margin-top: 200px;
         }
 
         .zoneDisplay {
@@ -269,9 +272,9 @@ printt("none", "none");
               <select class="zonSelect select" name="selectedZone" id="zone" onchange="updateClubs(this.value)">
                 <option selected value="none">Select a Zone</option>
               </select>
-              <select class="clubSelect select" id="clubs">
+              <!-- <select class="clubSelect select" id="clubs">
                 <option disabled selected value="">Select a Club</option>
-              </select>
+              </select> -->
               <input class="selectSubmitBtn" type="submit" value="Apply Filterss">
             </form>
           </div>

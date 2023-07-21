@@ -120,12 +120,13 @@ body {
   transition: 0.2s;
   color: black;
   background-color: rgba(0, 0, 0, 0.07);
-   width: calc((80vw - (5 * 10px)) / 3);
+  width: calc((80vw - (5 * 10px)) / 3);
 }
 .outer:nth-last-child(-n + 2) {
-  /* width: calc((80vw - (5 * 10px)) / 3); */
-}
+  /* flex-grow: 0 !important; */
 
+  /* width: calc((80vw - (5 * 10px)) / 3) !important; */
+}
 
 .outer .imgOuter {
   display: flex;
@@ -170,7 +171,7 @@ body {
 }
 .outer .VolunteerDetailsOuter .main .position {
   /* background-color: rgba(0, 0, 255, 0.135); */
-  height: 45px;
+  /* height: 45px; */
   margin: 0px;
   color: rgb(0, 0, 0);
   margin-top: -10px;
@@ -251,6 +252,8 @@ body {
 .clubDetails .clubNameUpper {
   font-family: "Anton", sans-serif;
   font-size: 3.5rem;
+  line-height: 1;
+  margin-bottom: 35px;
 }
 .clubDetails .details {
   margin-top: -25px;
@@ -258,64 +261,117 @@ body {
   font-weight: 600;
   display: flex;
   flex-direction: column;
+  /* background-color: antiquewhite; */
 }
 .clubDetails .details .upperSec {
   display: flex;
   flex-wrap: wrap;
+  /* background-color: aquamarine; */
   /* gap: 20px; */
+}
+.clubDetails .details .upperSec .sec1 .content,
+.clubDetails .details .upperSec .sec2 .content {
+  line-height: 0.36;
 }
 .clubDetails .details .lowerSec {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   min-width: 80vw;
-  /* background-color: #f80000bb; */
-  margin-top: 10px;
+  margin-top: 15px;
   margin-bottom: 20px;
   flex-wrap: wrap;
   gap: 0px;
 }
-.clubDetails .details .sec1,
-.clubDetails .details .sec2 {
+.clubDetails .details .upperSec .sec1 {
   /* background-color: rgba(0, 255, 255, 0.328); */
-  width: 400px;
+  width: 325px;
+}
+.clubDetails .details .upperSec .sec2{
+  width: 325px;
+  /* width: 325px; */
+
 }
 .content {
   font-weight: 400;
   font-size: 1rem;
 }
 .lowerSec .lowerSecDetails p {
-  margin: 0px;
-  line-height: 0.36;
+  margin: -10px 0px 0px 0px;
+  line-height: 0.95;
 }
 .lowerSec .lowerSecDetails {
   /* background-color: #3737374b; */
 }
+.payOuter {
+  display: flex;
+  justify-content: center;
+  align-items: first baseline;
+  width: 50px;
+  height: 25px;
+}
+.pay {
+  background-color: green;
+  color: white;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: first baseline;
+  width: 50px;
+  height: 25px;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+.paySection{
+  display: flex;
+  justify-content: flex-start;
+  align-items: first baseline;
+  flex-wrap: wrap;
+}
+.lciPayment{
+  margin-left: 5px;
+}
+.pay:hover {
+  background-color: #424242;
+  color: white !important;
+}
+.breadCrumbs {
+  width: 80vw;
+  padding: 5px;
+  margin-top: -20px;
+  /* background-color: aqua; */
+}
+.breadCrumbs a {
+  text-decoration: none;
+  color: grey;
+  margin-left: 0px;
+  transition: 0.4s;
+}
+.breadCrumbs a:hover {
+  color: #373737;
+  margin-left: -5px;
+}
 @media (max-width: 1230px) {
   .outer {
     /* flex-grow: none; */
-   width: calc((80vw - (5 * 10px)) / 2);
-
+    width: calc((80vw - (5 * 10px)) / 2);
   }
 }
 @media (max-width: 810px) {
   .outer {
     /* flex-grow: none; */
-   width: calc((80vw - (5 * 0px)) / 1);
-
+    width: calc((80vw - (5 * 0px)) / 1);
   }
 }
 
 @media (max-width: 660px) {
-
   .volunteersOuter {
     justify-content: center;
   }
   .outer {
     flex-grow: none;
-   width: calc((80vw - (5 * 10px)) / 1);
-   width: 97vw;
-
+    width: calc((80vw - (5 * 10px)) / 1);
+    width: 97vw;
   }
   .clubDetails {
   }

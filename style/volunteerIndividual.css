@@ -9,6 +9,12 @@ html,
 body {
   overflow-x: hidden !important;
 }
+td {
+  min-width: 100px;
+  /* display: flex; */
+  /* justify-content: flex-start; */
+  /* align-items: flex-end; */
+}
 
 /* Style for the scrollbar thumb */
 ::-webkit-scrollbar {
@@ -65,9 +71,9 @@ body {
   overflow: hidden;
 }
 .detailsOuter .nameMain {
-  /* font-family: "Anton", sans-serif; */
-  color: rgb(212, 172, 250);
-  font-size: 4rem;
+  font-family: "Anton", sans-serif !important;
+  color: rgb(195, 182, 152);
+  font-size: 4.4rem;
   font-weight: 500;
 }
 .detailsOuter .position {
@@ -86,7 +92,13 @@ body {
 .detailsOuter .contents span {
   font-weight: 600;
 }
-
+.contactDetails {
+  font-family: "Anton", sans-serif !important;
+  color: rgb(0, 0, 0);
+  font-size: 2.4rem;
+  font-weight: 500;
+  margin-top: 50px;
+}
 .socialLinks {
   display: flex;
   justify-content: center;
@@ -116,6 +128,23 @@ body {
 }
 .socialLinks a i {
   color: rgb(107, 105, 105);
+}
+.breadCrumbs {
+  width: 80vw;
+  padding: 5px;
+  margin-top: -10px;
+  margin-bottom: -10px;
+  /* background-color: aqua; */
+}
+.breadCrumbs a {
+  text-decoration: none;
+  color: grey;
+  margin-left: 0px;
+  transition: 0.4s;
+}
+.breadCrumbs a:hover {
+  color: #373737;
+  margin-left: -5px;
 }
 @media (max-width: 711px) {
   .memberOuterMost {

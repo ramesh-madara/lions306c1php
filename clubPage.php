@@ -4,17 +4,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- //Delete -->
 <?php
-// if (isset($_GET['id'])) {
-//   $id = $_GET['id'];
-//   $query = "DELETE FROM `appointment` WHERE appointmentNumber = '$id'";
-//   $run = mysqli_query($conn, $query);
-//   if ($run) {
-//     header('location:feedback.php');
-//   } else {
-//     echo "Error: " . mysqli_error($conn);
-//   }
-//   echo $_GET['id'];
-// }
+
 ?>
 
 <!--SEARCHED or NOT BITFLIP-->
@@ -23,10 +13,7 @@ $regionName = trim(filter_input(INPUT_GET, 'region', FILTER_SANITIZE_SPECIAL_CHA
 $district = trim(filter_input(INPUT_GET, 'district', FILTER_SANITIZE_SPECIAL_CHARS));
 $zone = trim(filter_input(INPUT_GET, 'zone', FILTER_SANITIZE_SPECIAL_CHARS));
 $clubID = trim(filter_input(INPUT_GET, 'clubID', FILTER_SANITIZE_SPECIAL_CHARS));
-// echo $regionName;
-// echo $district;
-// echo $zone;
-// echo $clubID;
+
 
 // Apply additional validation if needed
 if (empty($regionName) || empty($district) || empty($zone) || empty($clubID)) {
@@ -34,6 +21,7 @@ if (empty($regionName) || empty($district) || empty($zone) || empty($clubID)) {
     // Return an error message or redirect the user to an appropriate page
 }
 
+$searchKey = 'none';
 $searchKey = trim(filter_input(INPUT_GET, 'searchKey', FILTER_SANITIZE_SPECIAL_CHARS));
 $searched = ($searchKey !== 'none');
 
@@ -41,19 +29,11 @@ $searched = ($searchKey !== 'none');
 
 
 $escapedDistrict = mysqli_real_escape_string($conn, $district); // Escape the district value
-// echo $escapedDistrict;
 $escapedRegionName = mysqli_real_escape_string($conn, $regionName); // Escape the region name value
 $escapedZoneName = mysqli_real_escape_string($conn, $zone); // Escape the zone name value
 $escapedClubID = mysqli_real_escape_string($conn, $clubID); // Escape the clubID  value
 $escapedSearchKey = mysqli_real_escape_string($conn, $searchKey); // Escape the clubID  value
-// echo $escapedSearchKey;
 
-// echo $escapedZoneName;
-// if ($searchKey == 'none') {
-// echo 'nosearch';
-// } else {
-// echo $searchKey;
-// }
 $searched = false;
 if (isset($_POST['submit'])) {
 
@@ -86,15 +66,15 @@ if (isset($_POST['showall'])) {
 }
 
 if ($searchKey != 'none') {
-    // echo $searchKey;
     $fetch =
-        "SELECT * FROM c_1_members_new WHERE District_Name = '$escapedDistrict' AND Region_Name = '$escapedRegionName' AND Zone_Name = '$escapedZoneName' AND Club_ID = '$escapedClubID' AND (First_Name LIKE '%$searchKey%' or Last_Name LIKE '%$searchKey%') ORDER BY CAST(SUBSTRING(Club_ID, 6) AS UNSIGNED) ASC";
+        "SELECT * FROM c_1_members_new WHERE District_Name = '$escapedDistrict' AND Region_Name = '$escapedRegionName' AND Zone_Name = '$escapedZoneName' AND Club_ID = '$escapedClubID' AND (First_Name LIKE '%$searchKey%' or Last_Name LIKE '%$searchKey%' or Middle_Name LIKE '%$searchKey%') ORDER BY CAST(SUBSTRING(Club_ID, 6) AS UNSIGNED) ASC";
+    // "SELECT * FROM c_1_members_new WHERE District_Name = '$escapedDistrict' AND Region_Name = '$escapedRegionName' AND Zone_Name = '$escapedZoneName' AND Club_ID = '$escapedClubID' AND (First_Name LIKE '%shalaka%' or Last_Name LIKE '%shalaka%') ORDER BY CAST(SUBSTRING(Club_ID, 6) AS UNSIGNED) ASC";
 } else {
     $fetch = "SELECT * FROM c_1_members_new WHERE District_Name = '$escapedDistrict' AND Region_Name = '$escapedRegionName' AND Zone_Name = '$escapedZoneName' AND Club_ID = '$escapedClubID' ORDER BY CAST(SUBSTRING(Club_ID, 6) AS UNSIGNED) ASC";
 }
 $result = mysqli_query($conn, $fetch);
 $volunteers = mysqli_fetch_all($result, MYSQLI_ASSOC);
-echo count($volunteers);
+// echo count($volunteers);
 $titleArrPre = [
     'Club President',
     'Club First Vice President',
@@ -134,6 +114,14 @@ $volunteersDef = mysqli_fetch_all($resultDef, MYSQLI_ASSOC);
     <p class="lead mt-3">There is no Volunteers</p>
 <?php endif; ?>
 
+<?php
+//global
+
+$fetchClubDetails = "SELECT *   from clubdetails WHERE Reg_No = '$clubID' ORDER BY Reg_No ASC";
+$resultClubDetails = mysqli_query($conn, $fetchClubDetails);
+$clubDetails2 = mysqli_fetch_all($resultClubDetails, MYSQLI_ASSOC);
+// echo count($clubDetails2);
+?>
 
 
 
@@ -151,21 +139,39 @@ $volunteersDef = mysqli_fetch_all($resultDef, MYSQLI_ASSOC);
         <div class="details">
             <div class="upperSec">
                 <div class="sec1">
-                    <span>Destrict: <span class="content"><?php echo $district; ?></span></span><br>
-                    <span>Region: <span class="content"><?php echo $regionName; ?></span></span><br>
-                    <span>Zone: <span class="content"><?php echo $zone; ?></span></span>
+                    <span>DESTRICT: <span class="content"><?php echo $district; ?></span></span><br>
+                    <span>REGION: <span class="content"><?php echo $regionName; ?></span></span><br>
+                    <span>ZONE: <span class="content"><?php echo $zone; ?></span></span>
                 </div>
                 <div class="sec2">
-                    <span>Reg. No.: <span class="content">123456</span></span><br>
-                    <span>Chartered On: <span class="content">20-06-2022</span></span>
+                    <span>REG. NO: <span class="content"><?php echo $clubDetails2[0]["Reg_No"] ?></span></span><br>
+                    <!-- <span>Chartered On: <span class="content"><?php echo $clubDetails2[0]["Charter_Date"] ?></span></span><br> -->
+                    <span>CHARTERED ON: <span class="content"><?php echo date("d-m-Y", strtotime($clubDetails2[0]["Charter_Date"])) ?></span></span><br>
+
+                    <span>MEMBER COUNT: <span class="content"><?php echo count($volunteers); ?></span></span>
+                </div>
+                <div class="sec2">
+                    <span class="paySection">LCI PAYMENT: <span class="content lciPayment"><?php $payment = '';
+                                                                                            if ($clubDetails2[0]["LCI_Payment"] < 0) {
+                                                                                                $payment = explode("-", $clubDetails2[0]["LCI_Payment"])[1];
+                                                                                                echo " " . " USD " . $payment . " CR";
+                                                                                            } else {
+                                                                                                $payment = $clubDetails2[0]["LCI_Payment"];
+                                                                                                echo " " . " USD " . $payment;
+                                                                                            }
+                                                                                            ?></span>
+                        <span class="payOuter"><a class="pay" href="">Pay</a></span>
+                        <span>DISTRICT PAYMENT: <span class="content"><?php echo "LKR " .  $clubDetails2[0]["District_Payment"] ?></span></span><br>
+
+                    </span><br>
                 </div>
             </div>
             <div class="lowerSec">
                 <div class="lowerSecDetails">
-                    <p>Extended by: <span class="content">Lions Club of Kiribathkumbura</span></p><br>
-                    <p>Extension Chairman: <span class="content">Lion Luxman Ullandupitiya</span></p><br>
-                    <p>Guiding Lion: <span class="content">Lion Luxman Ullandupitiya</span></p><br>
-                    <p>DG then in Office: <span class="content">DG Lion Amal Pussallage</span></p>
+                    <p>EXTENDED BY: <span class="content"><?php echo $clubDetails2[0]["Extended_by"] ?></span></p><br>
+                    <p>EXTENSION CHAIRMAN: <span class="content"><?php echo $clubDetails2[0]["Extention_Chairman"] ?></span></p><br>
+                    <p>GUIDING LION: <span class="content"><?php echo $clubDetails2[0]["Guiding_Lion"] ?></span></p><br>
+                    <p>DG THEN IN OFFICE: <span class="content"><?php echo $clubDetails2[0]["DG_then_in_office"] ?></span></p>
                 </div>
                 <div class="searchOuter">
                     <nav class="searchComponent ">
@@ -181,6 +187,11 @@ $volunteersDef = mysqli_fetch_all($resultDef, MYSQLI_ASSOC);
 
             </div>
         </div>
+    </div>
+    <div class="breadCrumbs">
+        <a href="index.php"><?php echo  "<i class='fa-solid fa-arrow-left'></i>" . " Go Back"  ?></a>
+        <!-- <a href="index.php">></a> -->
+        <!-- <a href="">Club Page</a> -->
     </div>
     <script>
 
@@ -203,6 +214,11 @@ $volunteersDef = mysqli_fetch_all($resultDef, MYSQLI_ASSOC);
     ];
     function printMember($item)
     {
+        global $regionName;
+        global $district;
+        global $zone;
+        global $clubID;
+
         global $titleArr;
         $title = "";
 
@@ -230,8 +246,6 @@ $volunteersDef = mysqli_fetch_all($resultDef, MYSQLI_ASSOC);
                 }
                 $arr2 = [];
 
-                $w = [1, 2, 3, 4];
-                $w2 = [1, 2, 3, 4, 5, 6];
                 $diffArr  = array_diff($titleArrTemp, $arr);
                 $arr2 = array_merge($arr2, $diffArr);
                 if (count($arr2) > 0) {
@@ -241,25 +255,22 @@ $volunteersDef = mysqli_fetch_all($resultDef, MYSQLI_ASSOC);
                 } else {
                     $title = implode(", ", $arr);
                 }
-                // foreach ($arr as $ar) {
-                //     // $title = $title . $ar . ', ';
-                //     // echo $ar . "|";
-                // }
-                // foreach ($arr as $key => $ar) {
-                //     // $title = $title . "Index: " . $key . ", Value: " . $ar . ', ';
-
-                //     $title = $title . $ar . ', ';
-                // }
-
-
-
-                // $title = $titleArrTemp[0] . ", " . $titleArrTemp[1];
             } else {
                 $title = $titleArrTemp[0];
             }
         }
+        //Prefix
+        $prefix = "";
+        if (
+            strpos(strtolower($item["Prefix"]), 'mr') !== false || strpos(strtolower($item["Prefix"]), 'mrs') !== false || strpos(strtolower($item["Prefix"]), 'ms') !== false
+        ) {
+            $prefix = "";
+        } else {
+            $prefix = strtoupper($item["Prefix"]) . " ";
+        }
+
         echo '<p class="position">' . $title . '</p>';
-        echo '<p class="name">LION ';
+        echo '<p class="name">LION ' . $prefix;
         $firstNameArr = explode(" ", $item['First_Name']);
         if (count($firstNameArr) > 1) {
             for ($i = 0; $i < count($firstNameArr); $i++) {
@@ -269,7 +280,11 @@ $volunteersDef = mysqli_fetch_all($resultDef, MYSQLI_ASSOC);
                 }
             }
         } else {
-            echo strtoupper($item['First_Name']) . " ";
+            if (strlen($item['First_Name']) >= 9) {
+                echo $item['First_Name'][0] . ". ";
+            } else {
+                echo strtoupper($item['First_Name']) . " ";
+            }
         }
         echo strtoupper($item['Last_Name']);
         echo '</p>';
@@ -281,7 +296,8 @@ $volunteersDef = mysqli_fetch_all($resultDef, MYSQLI_ASSOC);
         echo '<a class="in"><i class="fa-brands fa-linkedin-in"></i></a>';
         echo '<a class="wtsapp" class=""><i class="fa-brands fa-whatsapp"></i></a>';
         echo '<a class="email"><i class="fa-regular fa-envelope"></i></a>';
-        echo '<a href="" class="more"><i class="fa-solid fa-plus"></i></a>';
+        echo '<a href="volunteer.php?key=' . $item["Member_ID"] . "&district=" . $district . "&region=" . $regionName . "&zone=" . $zone . "&clubID=" . $clubID . '" class="more"><i class="fa-solid fa-plus"></i></a>';
+
         echo '</div>';
         echo '</div>';
         echo '</div>';
@@ -289,7 +305,6 @@ $volunteersDef = mysqli_fetch_all($resultDef, MYSQLI_ASSOC);
 
     function printMemberTitled($item, $memTitle, $title3)
     {
-
         if ($memTitle == $title3) {
             printMember($item);
         }
@@ -299,47 +314,44 @@ $volunteersDef = mysqli_fetch_all($resultDef, MYSQLI_ASSOC);
     <div class="volunteersOuter">
 
         <?php
-        $lastMemID = "";
-        foreach ($titleArr as $title3) {
-
+        if ($searchKey != 'none') {
             foreach ($volunteers as $item) {
 
-                if ($item["Title"] != null) {
-                    $memTitles =  explode("-", $item["Title"]);
-                    // echo 88;
-                    foreach ($memTitles as $memTitle) {
-                        if ($item["Member_ID"] != $lastMemID) {
+                // if ($item["Title"] == null) {
 
-                            printMemberTitled($item, $memTitle, $title3);
-                            $lastMemID = $item["Member_ID"];
+                printMember($item);
+                // }
+            }
+        } else {
+
+            $lastMemID = "";
+            foreach ($titleArr as $title3) {
+
+                foreach ($volunteers as $item) {
+
+                    if ($item["Title"] != null) {
+                        $memTitles =  explode("-", $item["Title"]);
+                        // echo 88;
+                        foreach ($memTitles as $memTitle) {
+                            if ($item["Member_ID"] != $lastMemID) {
+                                // echo $item["First_Name"];
+                                printMemberTitled($item, $memTitle, $title3);
+                                $lastMemID = $item["Member_ID"];
+                            }
                         }
                     }
                 }
             }
-        }
-        // foreach ($volunteers as $item) {
-        //     $memTitlesOther =  explode("-", $item["Title"]);
-        //     $othersExists = false;
-        //     foreach ($titleArr as $title) {
-        //         foreach ($memTitlesOther as $other) {
-        //             if ($item["Title"] != null & $title != $other) {
-        //                 $othersExists = true;
-        //             }
-        //         }
-        //     }
 
-        //     if ($othersExists == true) {
+            foreach ($volunteers as $item) {
 
-        //         printMember($item);
-        //     }
-        // }
-        foreach ($volunteers as $item) {
+                if ($item["Title"] == null) {
 
-            if ($item["Title"] == null) {
-
-                printMember($item);
+                    printMember($item);
+                }
             }
         }
+
         ?>
 
 
