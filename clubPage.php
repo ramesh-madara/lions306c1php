@@ -303,7 +303,7 @@ $clubDetails2 = mysqli_fetch_all($resultClubDetails, MYSQLI_ASSOC);
         echo '</div>';
     }
 
-    function printMemberTitled($item, $memTitle, $title3)
+    function printMemberTitled($item, $memTitle, $title3, $lastMemID)
     {
         if ($memTitle == $title3) {
             printMember($item);
@@ -314,43 +314,52 @@ $clubDetails2 = mysqli_fetch_all($resultClubDetails, MYSQLI_ASSOC);
     <div class="volunteersOuter">
 
         <?php
-        if ($searchKey != 'none') {
+// if ($searchKey != 'none') {
+foreach ($volunteers as $item) {
+
+            if ($item["Title"] == null) {
+
+                // printMember($item);
+            }
+}
+// } else {
+
+$lastMemID = "";
+foreach ($titleArr as $title3) {
+
             foreach ($volunteers as $item) {
 
-                // if ($item["Title"] == null) {
-
-                printMember($item);
-                // }
-            }
-        } else {
-
-            $lastMemID = "";
-            foreach ($titleArr as $title3) {
-
-                foreach ($volunteers as $item) {
-
-                    if ($item["Title"] != null) {
-                        $memTitles =  explode("-", $item["Title"]);
-                        // echo 88;
+                if ($item["Title"] != null) {
+                    $memTitles =  explode("-", $item["Title"]);
+                    // echo implode("|", $memTitles) . " </br>";
+                    if ($item["Member_ID"] != $lastMemID) {
+                        $lastMemTittle = "";
+                        $titleCount = 0;
                         foreach ($memTitles as $memTitle) {
-                            if ($item["Member_ID"] != $lastMemID) {
-                                // echo $item["First_Name"];
-                                printMemberTitled($item, $memTitle, $title3);
-                                $lastMemID = $item["Member_ID"];
+                            if (in_array($memTitle, $titleArr)) {
+                                $titleCount++;
                             }
+                            // echo $titleCount;
+
+                            if ($memTitle == $title3 & $titleCount <= 1) {
+                                printMember($item);
+                            }
+                            $lastMemID = $item["Member_ID"];
+                            $lastMemTittle = $memTitle;
                         }
                     }
                 }
             }
+        }
 
-            foreach ($volunteers as $item) {
+foreach ($volunteers as $item) {
 
-                if ($item["Title"] == null) {
+            if ($item["Title"] == null) {
 
-                    printMember($item);
-                }
+                printMember($item);
             }
         }
+        // }
 
         ?>
 
