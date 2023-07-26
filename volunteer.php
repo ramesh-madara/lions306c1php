@@ -9,6 +9,7 @@ $regionName = trim(filter_input(INPUT_GET, 'region', FILTER_SANITIZE_SPECIAL_CHA
 $district = trim(filter_input(INPUT_GET, 'district', FILTER_SANITIZE_SPECIAL_CHARS));
 $zone = trim(filter_input(INPUT_GET, 'zone', FILTER_SANITIZE_SPECIAL_CHARS));
 $clubID = trim(filter_input(INPUT_GET, 'clubID', FILTER_SANITIZE_SPECIAL_CHARS));
+$prefix = trim(filter_input(INPUT_GET, 'prefix', FILTER_SANITIZE_SPECIAL_CHARS));
 // echo $regionName . $zone . $clubID . $district;
 
 // Assuming you have a database connection established
@@ -21,7 +22,7 @@ $key = filter_input(INPUT_GET, 'key', FILTER_SANITIZE_SPECIAL_CHARS);
 $sanitized_key = mysqli_real_escape_string($conn, $key);
 
 // Construct the SQL query
-$query = "SELECT * FROM c_1_members_new WHERE Member_ID = '$sanitized_key'";
+$query = "SELECT * FROM c_1_members_new WHERE Member_ID = '$sanitized_key' LIMIT 1";
 
 // Execute the query
 $result = mysqli_query($conn, $query);
@@ -33,6 +34,12 @@ if ($result) {
     while ($row = mysqli_fetch_assoc($result)) {
 ?>
         <?php
+        $src = "https://img.freepik.com/premium-photo/young-handsome-man-with-beard-isolated-keeping-arms-crossed-frontal-position_1368-132662.jpg";
+        if ($row['Member_Photo'] != null) {
+            $src = "https://i.imgur.com/DaEQt4b.jpg";
+        } else {
+            $src = "https://img.freepik.com/premium-photo/young-handsome-man-with-beard-isolated-keeping-arms-crossed-frontal-position_1368-132662.jpg";
+        }
         $titleArr = [
             'Club President',
             'Club First Vice President',
@@ -78,10 +85,23 @@ if ($result) {
         }
 
         $titleList = explode(", ", $title);
+        $clubTitles = [];
+        $districtTitles = [];
+        $councilTitles = [];
+        for ($i = 0; $i < count($titleList); $i++) {
+            if (strpos($titleList[$i], "Multiple District") !== false | strpos($titleList[$i], "Council") !== false) {
+                array_push($councilTitles, $titleList[$i]);
+            } else if (strpos($titleList[$i], "District") !== false) {
+                array_push($districtTitles, $titleList[$i]);
+            } else {
+                array_push($clubTitles, $titleList[$i]);
+            }
+        }
+        // echo $districtTitles[0];
         ?>
         <div class="memberOuterMost">
             <div class="photoOuter">
-                <img src="https://img.freepik.com/premium-photo/young-handsome-man-with-beard-isolated-keeping-arms-crossed-frontal-position_1368-132662.jpg" height="150" class="img-thumnail" />
+                <img src=<?php echo $src; ?> height="150" class="img-thumnail" />
             </div>
             <div class="detailsOuter">
                 <div class="breadCrumbs">
@@ -89,9 +109,13 @@ if ($result) {
                     <!-- <a href="index.php">></a> -->
                     <!-- <a href="">Club Page</a> -->
                 </div>
-                <div class="nameMain"><?php echo strtoupper("LION " . $row['First_Name'] . " " . $row['Last_Name']); ?></div>
+                <div class="nameMain"><?php echo strtoupper("LION " . $prefix . " " . $row['First_Name'] . " " . $row['Last_Name'] . " " . $row['Suffix']); ?></div>
                 <!-- <div class="position"><?php echo $row['district_position_1']; ?></div> -->
                 <div class="contents">
+                    <div class="description">
+                        <label for="">About:</label><br>
+                        <p>Meet Alex, a radiant beacon of positivity, spreading joy and warmth with an infectious smile. Their boundless energy and empathetic nature make them a trusted confidant and a true friend to all. As a natural leader, they uplift and motivate others, turning challenges into growth opportunities. Alex's compassion and optimism leave a lasting impact, making the world a better place, one smile at a time.</p>
+                    </div>
                     <table>
                         <tr>
                             <td><span>M/N: </span></td>
@@ -99,40 +123,85 @@ if ($result) {
                         </tr>
                         <tr>
                             <td><span>DISTRICT: </span></td>
-                            <td class="detail"><?php echo strtoupper($row['District_Name']); ?></td>
+                            <td class="detail"><?php echo strtoupper(str_replace("District", "", $row['District_Name'])); ?></td>
                         </tr>
                         <tr>
                             <td><span>REGION: </span></td>
-                            <td class="detail"><?php echo strtoupper($row['Region_Name']); ?></td>
+                            <td class="detail"><?php echo strtoupper(str_replace("Region:", "", $row['Region_Name'])); ?></td>
                         </tr>
                         <tr>
                             <td><span>ZONE: </span></td>
-                            <td class="detail"><?php echo strtoupper($row['Zone_Name']); ?></td>
+                            <td class="detail"><?php echo strtoupper(str_replace("Zone:", "", $row['Zone_Name'])); ?></td>
                         </tr>
                         <tr>
-                            <td><span>UPPER: </span></td>
+                            <td><span>CLUB NAME: </span></td>
                             <td class="detail"><?php echo strtoupper($row['Club_Name']); ?></td>
                         </tr>
+                        <tr>
+                            <td><span>JOINED DATE: </span></td>
+                            <td class="detail"><?php echo strtoupper(date("d-m-Y", strtotime($row['Join_Date']))); ?></td>
+                        </tr>
+                        <tr>
+                            <?php
+                            // Given date
+                            $givenDate = $row['Join_Date'];
+
+                            // Current date
+                            $currentDate = date('Y-m-d H:i:s');
+
+                            // Convert the dates to DateTime objects
+                            $givenDateTime = new DateTime($givenDate);
+                            $currentDateTime = new DateTime($currentDate);
+
+                            // Calculate the difference between the two dates
+                            $interval = $givenDateTime->diff($currentDateTime);
+
+                            // Extract the interval components
+                            $years = $interval->format('%Y');
+                            $months = $interval->format('%m');
+
+                            // Output the result
+                            $resultDuration = $years . ' Years ' . ", " . $months . ' Months';
+                            // echo $resultDuration;
+                            ?>
+
+                            <td><span>DURATION SERVED: </span></td>
+                            <td class="detail"><?php echo strtoupper($resultDuration); ?></td>
+                        </tr>
                         <?php
-                        for ($i = 0; $i < count($titleList); $i++) {
+                        for ($i = 0; $i < count($clubTitles); $i++) {
                             echo '<tr>';
-                            echo '<td><span>POSITION ' . $i + 1 . ": " .  ' </span></td>';
-                            echo '<td class="detail">' .  strtoupper($titleList[$i]) . '</td>';
+                            echo '<td><span>CLUB POSITION ' . $i + 1 . ": " .  ' </span></td>';
+                            echo '<td class="detail">' .  strtoupper($clubTitles[$i]) . '</td>';
+                            echo '</tr>';
+                        }
+                        for ($i = 0; $i < count($districtTitles); $i++) {
+                            echo '<tr>';
+                            echo '<td><span>DISTRICT POSITION ' . $i + 1 . ": " .  ' </span></td>';
+                            echo '<td class="detail">' .  strtoupper($districtTitles[$i]) . '</td>';
+                            echo '</tr>';
+                        }
+                        for ($i = 0; $i < count($councilTitles); $i++) {
+                            echo '<tr>';
+                            echo '<td><span>COUNCIL POSITION ' . $i + 1 . ": " .  ' </span></td>';
+                            echo '<td class="detail">' .  strtoupper($councilTitles[$i]) . '</td>';
                             echo '</tr>';
                         }
                         ?>
-                        <tr>
-                            <td><span>UPPER: </span></td>
-                            <td class="detail"><?php echo strtoupper($row['Spouse_Name']); ?></td>
-                        </tr>
-                        <tr>
+
+
+                        <!-- <tr>
                             <td><span>NAME: </span></td>
                             <td class="detail"><?php echo strtoupper($row['First_Name'] . " " . $row['Last_Name']); ?></td>
-                        </tr>
+                        </tr> -->
 
                         <tr>
-                            <td><span>DESIGNATION: </span></td>
+                            <td><span>OCCUPATION: </span></td>
                             <td class="detail"><?php echo strtoupper($row['Occupation']); ?></td>
+                        </tr>
+                        <tr>
+                            <td><span>SPOUSE: </span></td>
+                            <td class="detail"><?php echo strtoupper($row['Spouse_Name']); ?></td>
                         </tr>
                     </table>
 

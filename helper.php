@@ -7,10 +7,10 @@ if (isset($_GET["value"])) {
     $result = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($result) > 0) {
-        echo "<option   selected value='none' >" . "Select a Zone"  . "</option>";
+        echo "<option   selected value='none' >" . "SELECT A ZONE"  . "</option>";
 
         while ($rows = mysqli_fetch_assoc($result)) {
-            echo "<option>" . $rows["Zone_Name"]  . "</option>";
+            echo "<option>" .  strtoupper($rows["Zone_Name"])  . "</option>";
         }
         // echo "</select>";
     }
@@ -29,7 +29,7 @@ if (isset($_GET["region"]) && isset($_GET["zone"])) {
     // <option disabled selected value="">Select an option</option>
 
     if (mysqli_num_rows($result) > 0) {
-        echo "<option  disabled selected >" . "Select a Club"  . "</option>";
+        echo "<option  disabled selected >" . "SELECT A CLUB"  . "</option>";
 
         while ($rows = mysqli_fetch_assoc($result)) {
             echo "<option>" . strtoupper($rows["Club_Name"])   . "</option>";

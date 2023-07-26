@@ -189,8 +189,10 @@ body {
 .clubDetails .clubNameUpper {
   font-family: "Anton", sans-serif;
   font-size: 3.5rem;
-  margin-bottom: -30px;
+  margin-bottom: -20px;
   margin-top: 15px;
+  color: #45AC89;
+  line-height: 1.1;
 }
 .clubDetails .details {
   /* font-family: 'Anton', sans-serif; */
@@ -271,12 +273,13 @@ body {
   .volunteersOuter #select-container form {
     display: flex;
     flex-direction: column;
+    width: 100vw;
   }
   .select {
-    width: 600px;
+    width: 90vw;
     height: 40px;
-   max-width: 70vw;
-    margin-bottom: 5px;
+   /* max-width: 70vw; */
+    margin-bottom: 20px;
   }
 
   .selectSubmitBtn {

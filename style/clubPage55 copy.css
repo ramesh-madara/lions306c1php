@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@100&display=swap");
-
+body {
+  /* background-color: aqua; */
+  /* margin : -10px 0px 0px 0px; */
+  /* overflow: hidden; */
+}
 html,
 body {
   overflow-x: hidden !important;
@@ -237,7 +241,6 @@ body {
   font-weight: 900;
   margin: 0px;
   color: black;
-  margin-top: -10px;
 }
 .outer .VolunteerDetailsOuter .main .position {
   /* background-color: rgba(0, 0, 255, 0.135); */
@@ -245,7 +248,7 @@ body {
   line-height: 1.2;
   margin: 0px;
   color: rgb(0, 0, 0);
-  margin-top: 2px;
+  margin-top: -10px;
   margin-bottom: 5px;
   font-size: 1.06rem;
 }
@@ -373,7 +376,9 @@ body {
   margin: -10px 0px 0px 0px;
   line-height: 0.7;
 }
-
+.lowerSec .lowerSecDetails {
+  /* background-color: #3737374b; */
+}
 
 .paySection {
   display: flex;
@@ -405,12 +410,6 @@ body {
   }
 }
 @media (max-width: 1363px) {
-  .searchComponent input {
-    flex-grow: 1;
-    width: 300px;
-  }
-}
-@media (max-width: 1238px) {
   .breadCrumbs {
     margin-top: -15px;
   }
@@ -423,7 +422,6 @@ body {
   }
   .searchComponent input {
     flex-grow: 1;
-    /* width: 200px; */
   }
   .districtPageLink {
     width: 50%;
@@ -445,7 +443,8 @@ body {
     width: calc((80vw - (5 * 10px)) / 1);
     width: 97vw;
   }
- 
+  .clubDetails {
+  }
   .clubDetails .clubNameUpper {
     scale: 0.9;
     font-size: xx-large;
@@ -488,8 +487,5 @@ body {
   }
    .breadCrumbs{
     width: calc((95vw - (5 * 0px)) / 1);
-  }
-  .showAll, .search{
-    font-size: 0.65rem !important;
   }
 }

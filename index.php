@@ -52,7 +52,74 @@ printt("none", "none");
 
 // $Zone = "";
 ?>
-<!--SEARCHED or NOT BITFLIP-->
+<!--GO TO TOP-->
+<script>
+  // When the user scrolls down 20px from the top of the document, show the button
+  window.onscroll = function() {
+    showGoToTopButton();
+  };
+
+  function showGoToTopButton() {
+    var goToTopBtn = document.getElementById("goToTopBtn");
+
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      goToTopBtn.style.display = "block";
+    } else {
+      goToTopBtn.style.display = "none";
+    }
+  }
+
+  // Function to scroll back to the top of the page when the button is clicked
+  function goToTop() {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
+  }
+</script>
+
+<style>
+  /* Styling for the "Go to Top" button */
+  #goToTopBtn {
+    display: none;
+    /* Hide the button by default */
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    z-index: 99;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    border-radius: 35px;
+    background-color: white;
+    width: 45px;
+    /* Customize the button's background color */
+    color: #fff;
+    /* Customize the button's text color */
+    cursor: pointer;
+    padding: 10px 10px 10px 10px;
+    /* border-radius: 4px; */
+    transition: 0.2s;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.545);
+  }
+
+  #goToTopBtn i {
+    color: #45AC89;
+  }
+
+  #goToTopBtn:hover {
+    transition: 0.2s;
+    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.545);
+    bottom: 42px;
+  }
+
+  #goToTopBtn:active {
+    transition: 0.05s;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.545);
+
+    bottom: 40px;
+  }
+</style>
+
+<button id="goToTopBtn" onclick="goToTop()"><i class="fa-solid fa-arrow-up"></i></button>
 <?php
 
 
@@ -68,7 +135,7 @@ printt("none", "none");
 <body>
 
   <div class="banner">
-    <p>Our District</p>
+    <p>OUR DISTRICT</p>
     <img src="img/volunteersBanner.jpg" alt="">
   </div>
 
@@ -87,8 +154,8 @@ printt("none", "none");
                                   ); ?>" class="mt-4 w-155" style="display: flex;">
         <input name="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
         <!-- <button class="btn btn-outline-success " name="submit" type="submit">Search</button> -->
-        <input type="submit" name="submit" value="Search" class="search">
-        <input type="submit" name="showall" value="Show all" class="showall">
+        <input type="submit" name="submit" value="SEARCH" class="search">
+        <input type="submit" name="showall" value="SHOW ALL" class="showall">
       </form>
     </nav>
 
@@ -189,7 +256,8 @@ printt("none", "none");
 
         .regionDisplay {
           font-family: "Anton", sans-serif;
-          margin-top: 200px;
+          font-size: 2.6rem;
+
         }
 
         .zoneDisplay {
@@ -234,11 +302,19 @@ printt("none", "none");
           color: black;
         }
 
+        .contentOuter {
+          /* background-color: #45AC89; */
+          margin-top: 20px;
+        }
+
         .regionDisplay:hover,
         .zoneDisplay:hover,
         .clubDisplay:hover {
           text-decoration: underline !important;
+          color: #45AC89;
         }
+
+        @media (max-width: 657px) {}
       </style>
       <?php
       if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -263,24 +339,26 @@ printt("none", "none");
           <div id="select-container">
             <form method="POST">
               <select class="regSelect select" name="selectedRegion" id="SelectA" onchange="update(this.value)">
-                <option selected value="none">Select a Region</option>
+                <option selected value="none">SELECT A REGION</option>
                 <?php foreach ($volunteersDefault as $item) : ?>
-                  <option value="<?php echo $item['Region_Name']; ?>"><?php echo $item['Region_Name']; ?></option>
+                  <option value="<?php echo $item['Region_Name'];  ?>"><?php echo strtoupper($item['Region_Name']);  ?></option>
                 <?php endforeach; ?>
               </select>
               <!--Options for zone and clubs select menus are displayed by retrieving from the helper.php via update() and updatreClubs() function -->
               <select class="zonSelect select" name="selectedZone" id="zone" onchange="updateClubs(this.value)">
-                <option selected value="none">Select a Zone</option>
+                <option selected value="none">SELECT A ZONE</option>
               </select>
               <!-- <select class="clubSelect select" id="clubs">
                 <option disabled selected value="">Select a Club</option>
               </select> -->
-              <input class="selectSubmitBtn" type="submit" value="Apply Filterss">
+              <input class="selectSubmitBtn" type="submit" value="APPLY FILTERS">
             </form>
           </div>
         </div>
+      </div>
 
-        <?php foreach ($volunteers as $item) : ?>
+      <?php foreach ($volunteers as $item) : ?>
+        <div class="contentOuter">
 
 
           <div>
@@ -343,11 +421,10 @@ printt("none", "none");
           </div>
 
 
+        </div>
 
-        <?php endforeach; ?>
-      </div>
+      <?php endforeach; ?>
 
-    </div>
 </body>
 <?php
 include 'inc/footer.php'; ?>

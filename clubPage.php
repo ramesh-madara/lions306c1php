@@ -88,28 +88,80 @@ $titleArrPre = [
     'Club Director',
     // 'Club Member'
 ];
-// $arr = [];
-// $titleArr2 = explode("-", $volunteers[18]['Title']);
-// echo count($titleArr2);
-// // echo $titleArr2[0];
-// foreach ($titleArrPre as $u) {
-//     for ($v = 0; $v < count($titleArr2); $v++) {
-//         if ($titleArr2[$v] == $u & strlen($titleArr2[$v]) != 0) {
-//             $arr[$v] = $u;
-//         }
-//     }
-// }
 
-// foreach ($arr as $ar) {
-//     echo $ar . ', ';
-// }
-// echo ($titleArr2[1]);
 
 $fetchDef = "SELECT * FROM c_1_members_new WHERE District_Name = '$escapedDistrict' AND Region_Name = '$escapedRegionName' AND Zone_Name = '$escapedZoneName' AND Club_ID = '$escapedClubID' ORDER BY CAST(SUBSTRING(Club_ID, 6) AS UNSIGNED) ASC LIMIT 10";
 $resultDef = mysqli_query($conn, $fetchDef);
 $volunteersDef = mysqli_fetch_all($resultDef, MYSQLI_ASSOC);
 ?>
+<!--GO TO TOP-->
+<script>
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function() {
+        showGoToTopButton();
+    };
 
+    function showGoToTopButton() {
+        var goToTopBtn = document.getElementById("goToTopBtn");
+
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            goToTopBtn.style.display = "block";
+        } else {
+            goToTopBtn.style.display = "none";
+        }
+    }
+
+    // Function to scroll back to the top of the page when the button is clicked
+    function goToTop() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
+    }
+</script>
+
+<style>
+    /* Styling for the "Go to Top" button */
+    #goToTopBtn {
+        display: none;
+        /* Hide the button by default */
+        position: fixed;
+        bottom: 40px;
+        right: 40px;
+        z-index: 99;
+        font-size: 18px;
+        border: none;
+        outline: none;
+        border-radius: 35px;
+        background-color: white;
+        width: 45px;
+        /* Customize the button's background color */
+        color: #fff;
+        /* Customize the button's text color */
+        cursor: pointer;
+        padding: 10px 10px 10px 10px;
+        /* border-radius: 4px; */
+        transition: 0.2s;
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.545);
+    }
+
+    #goToTopBtn i {
+        color: #45AC89;
+    }
+
+    #goToTopBtn:hover {
+        transition: 0.2s;
+        box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.545);
+        bottom: 42px;
+    }
+
+    #goToTopBtn:active {
+        transition: 0.05s;
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.545);
+
+        bottom: 40px;
+    }
+</style>
+
+<button id="goToTopBtn" onclick="goToTop()"><i class="fa-solid fa-arrow-up"></i></button>
 <?php if (empty($volunteers)) : ?>
     <p class="lead mt-3">There is no Volunteers</p>
 <?php endif; ?>
@@ -139,9 +191,9 @@ $clubDetails2 = mysqli_fetch_all($resultClubDetails, MYSQLI_ASSOC);
         <div class="details">
             <div class="upperSec">
                 <div class="sec1">
-                    <span>DESTRICT: <span class="content"><?php echo $district; ?></span></span><br>
-                    <span>REGION: <span class="content"><?php echo $regionName; ?></span></span><br>
-                    <span>ZONE: <span class="content"><?php echo $zone; ?></span></span>
+                    <span>DESTRICT: <span class="content"><?php echo strtoupper(str_replace('District ', '', $district)); ?></span></span><br>
+                    <span>REGION: <span class="content"><?php echo strtoupper(str_replace('Region:', '', $regionName)); ?></span></span><br>
+                    <span>ZONE: <span class="content"><?php echo strtoupper(str_replace('Zone:', '', $zone)); ?></span></span>
                 </div>
                 <div class="sec2">
                     <span>REG. NO: <span class="content"><?php echo $clubDetails2[0]["Reg_No"] ?></span></span><br>
@@ -154,28 +206,27 @@ $clubDetails2 = mysqli_fetch_all($resultClubDetails, MYSQLI_ASSOC);
                     <span class="paySection">LCI PAYMENT: <span class="content lciPayment"><?php $payment = '';
                                                                                             if ($clubDetails2[0]["LCI_Payment"] < 0) {
                                                                                                 $payment = explode("-", $clubDetails2[0]["LCI_Payment"])[1];
-                                                                                                echo " " . " USD " . $payment . " CR";
+                                                                                                echo " " . " USD " .  number_format($payment, 2, '.', ',') . " CR";
                                                                                             } else {
                                                                                                 $payment = $clubDetails2[0]["LCI_Payment"];
-                                                                                                echo " " . " USD " . $payment;
+                                                                                                echo " " . " USD " . number_format($payment, 2, '.', ',');
                                                                                             }
-                                                                                            ?></span>
-                        <span class="payOuter"><a class="pay" href="">Pay</a></span>
-                        <span>DISTRICT PAYMENT: <span class="content"><?php echo "LKR " .  $clubDetails2[0]["District_Payment"] ?></span></span><br>
+                                                                                            ?></span></span>
+                    <!-- <span class="payOuter"><a class="pay" href="">Pay</a></span> -->
+                    <span>DISTRICT PAYMENT: <span class="content"><?php echo "LKR " . number_format($clubDetails2[0]["District_Payment"]) . ".00" ?></span></span><br>
 
-                    </span><br>
+                    <!-- </span><br> -->
                 </div>
             </div>
             <div class="lowerSec">
                 <div class="lowerSecDetails">
-                    <p>EXTENDED BY: <span class="content"><?php echo $clubDetails2[0]["Extended_by"] ?></span></p><br>
-                    <p>EXTENSION CHAIRMAN: <span class="content"><?php echo $clubDetails2[0]["Extention_Chairman"] ?></span></p><br>
-                    <p>GUIDING LION: <span class="content"><?php echo $clubDetails2[0]["Guiding_Lion"] ?></span></p><br>
-                    <p>DG THEN IN OFFICE: <span class="content"><?php echo $clubDetails2[0]["DG_then_in_office"] ?></span></p>
+                    <p>EXTENDED BY: <span class="content"><?php echo strtoupper($clubDetails2[0]["Extended_by"])  ?></span></p><br>
+                    <p>EXTENSION CHAIRMAN: <span class="content"><?php echo strtoupper($clubDetails2[0]["Extention_Chairman"])  ?></span></p><br>
+                    <p>GUIDING LION: <span class="content"><?php echo strtoupper($clubDetails2[0]["Guiding_Lion"])  ?></span></p><br>
+                    <p>DG THEN IN OFFICE: <span class="content"><?php echo strtoupper($clubDetails2[0]["DG_then_in_office"])  ?></span></p>
                 </div>
-                <div class="searchOuter">
+                <!-- <div class="searchOuter">
                     <nav class="searchComponent ">
-                        <!-- <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="mt-4 w-155" style="display: flex;"> -->
                         <input name="search" id="search" class="form-control" type="search" placeholder="Enter Search key" aria-label="Search" onkeydown="if(event.keyCode==13) document.querySelector('.search').click()">
                         <a class="btn btn-dark w-35 search" onclick="this.href='clubPage.php?district=<?php echo $district  ?>&region=<?php echo $regionName; ?>&zone=<?php echo $zone; ?>&clubID=<?php echo $clubID; ?>&searchKey='+(document.getElementById('search').value ==''? 'none':document.getElementById('search').value)">
                             Search</a>
@@ -183,13 +234,32 @@ $clubDetails2 = mysqli_fetch_all($resultClubDetails, MYSQLI_ASSOC);
                             Show all</a>
 
                     </nav>
-                </div>
+                </div> -->
 
             </div>
         </div>
     </div>
     <div class="breadCrumbs">
-        <a href="index.php"><?php echo  "<i class='fa-solid fa-arrow-left'></i>" . " Go Back"  ?></a>
+        <div class="navigation">
+            <!-- <a class=" btn districtPageLink" href="index.php"><i class='fa-solid fa-arrow-left'></i>District Page</a> -->
+            <a class=" btn districtPageLink" href="index.php"> OUR DISTRICT</a>
+            <span class="payOuter"><a class=" btn pay" href="">PAY DUES</a></span>
+        </div>
+        <div class="searchOuter">
+            <nav class="searchComponent ">
+                <!-- <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="mt-4 w-155" style="display: flex;"> -->
+                <input name="search" id="search" class="form-control" type="search" placeholder="Enter Search key" aria-label="Search" onkeydown="if(event.keyCode==13) document.querySelector('.search').click()">
+                <a class="btn btn-dark w-35 search" onclick="this.href='clubPage.php?district=<?php echo $district  ?>&region=<?php echo $regionName; ?>&zone=<?php echo $zone; ?>&clubID=<?php echo $clubID; ?>&searchKey='+(document.getElementById('search').value ==''? 'none':document.getElementById('search').value)">
+                    SEARCH</a>
+                <a class="btn btn-dark w-35 showAll" onclick="this.href='clubPage.php?district=<?php echo $district  ?>&region=<?php echo $regionName; ?>&zone=<?php echo $zone; ?>&clubID=<?php echo $clubID; ?>&searchKey=<?php echo 'none'; ?>'">
+                    SHOW ALL</a>
+
+            </nav>
+        </div>
+        <!-- <a href="index.php"><?php echo  "<i class='fa-solid fa-arrow-left'></i>" . " Go Back"  ?></a> -->
+
+
+
         <!-- <a href="index.php">></a> -->
         <!-- <a href="">Club Page</a> -->
     </div>
@@ -212,95 +282,126 @@ $clubDetails2 = mysqli_fetch_all($resultClubDetails, MYSQLI_ASSOC);
         'Club Director',
         // 'Club Member'
     ];
+    $lastMemberID2 = [];
     function printMember($item)
     {
-        global $regionName;
-        global $district;
-        global $zone;
-        global $clubID;
+        global $lastMemberID2;
+        // echo $lastMemberID2 . $item['Last_Name'];
+        if (!in_array($item['Member_ID'], $lastMemberID2)) {
+            global $regionName;
+            global $district;
+            global $zone;
+            global $clubID;
 
-        global $titleArr;
-        $title = "";
-
-        echo '<div class="outer">';
-        echo '<div class="imgOuter">';
-        echo '<img src="https://img.freepik.com/premium-photo/young-handsome-man-with-beard-isolated-keeping-arms-crossed-frontal-position_1368-132662.jpg" height="150" class="img-thumnail" />';
-        echo '</div>';
-        echo '<div class="VolunteerDetailsOuter">';
-        echo '<div class="main">';
-        if ($item['Title'] == "") {
-            $title = "Club Member";
-        } else {
-            $titleArrTemp = explode("-", $item['Title']);
-            if (count($titleArrTemp) > 1) {
-                $arr = [];
-                // echo count($titleArrTemp);
-                // echo $titleArrTemp[0];
-                foreach ($titleArr as $u) {
-                    for ($v = 0; $v < count($titleArrTemp); $v++) {
-                        if ($titleArrTemp[$v] == $u & strlen($titleArrTemp[$v]) > 0) {
-                            // $arr[$v] = $u;
-                            $arr[$v] = $titleArrTemp[$v];
+            global $titleArr;
+            $title = "";
+            $src = "https://img.freepik.com/premium-photo/young-handsome-man-with-beard-isolated-keeping-arms-crossed-frontal-position_1368-132662.jpg";
+            if ($item['Member_Photo'] != null) {
+                $src = "https://i.imgur.com/DaEQt4b.jpg";
+            } else {
+                $src = "https://img.freepik.com/premium-photo/young-handsome-man-with-beard-isolated-keeping-arms-crossed-frontal-position_1368-132662.jpg";
+            }
+            echo '<div class="outer">';
+            echo '<div class="imgOuter">';
+            echo '<img src="' . $src . '" height="150" class="img-thumnail" />';
+            echo '</div>';
+            echo '<div class="VolunteerDetailsOuter">';
+            echo '<div class="main">';
+            if ($item['Title'] == "") {
+                $title = "Club Member";
+            } else {
+                $titleArrTemp = explode("-", $item['Title']);
+                if (count($titleArrTemp) > 1) {
+                    $arr = [];
+                    foreach ($titleArr as $u) {
+                        for ($v = 0; $v < count($titleArrTemp); $v++) {
+                            if ($titleArrTemp[$v] == $u & strlen($titleArrTemp[$v]) > 0) {
+                                $arr[$v] = $titleArrTemp[$v];
+                            }
                         }
                     }
-                }
-                $arr2 = [];
+                    $arr2 = [];
 
-                $diffArr  = array_diff($titleArrTemp, $arr);
-                $arr2 = array_merge($arr2, $diffArr);
-                if (count($arr2) > 0) {
-                    if (strlen($arr2[0]) > 1) {
-                        $title = implode(", ", $arr) . ", " . implode(", ", $arr2);
+                    $diffArr  = array_diff($titleArrTemp, $arr);
+                    $arr2 = array_merge($arr2, $diffArr);
+                    if (count($arr2) > 0) {
+                        if (strlen($arr2[0]) > 1) {
+                            $title = implode(", ", $arr) . ", " . implode(", ", $arr2);
+                        }
+                    } else {
+                        $title = implode(", ", $arr);
                     }
                 } else {
-                    $title = implode(", ", $arr);
+                    $title = $titleArrTemp[0];
                 }
-            } else {
-                $title = $titleArrTemp[0];
             }
-        }
-        //Prefix
-        $prefix = "";
-        if (
-            strpos(strtolower($item["Prefix"]), 'mr') !== false || strpos(strtolower($item["Prefix"]), 'mrs') !== false || strpos(strtolower($item["Prefix"]), 'ms') !== false
-        ) {
+            //Prefix
             $prefix = "";
-        } else {
-            $prefix = strtoupper($item["Prefix"]) . " ";
-        }
+            if (
+                strpos(strtolower($item["Prefix"]), 'mr') !== false || strpos(strtolower($item["Prefix"]), 'mrs') !== false || strpos(strtolower($item["Prefix"]), 'ms') !== false
+            ) {
+                $prefix = "";
+            } else {
+                $prefix = strtoupper($item["Prefix"]) . " ";
+            }
 
-        echo '<p class="position">' . $title . '</p>';
-        echo '<p class="name">LION ' . $prefix;
-        $firstNameArr = explode(" ", $item['First_Name']);
-        if (count($firstNameArr) > 1) {
+            echo '<p class="name">LION ' . $prefix;
+            $firstNameArr = explode(" ", $item['First_Name']);
+            // if (count($firstNameArr) > 1) {
             for ($i = 0; $i < count($firstNameArr); $i++) {
-                $subStr = strtoupper($firstNameArr[$i]);
-                if (strlen($subStr) != 0) {
-                    echo $subStr[0] . ". ";
+                $subStr1 = strtoupper($firstNameArr[$i]);
+                if (strlen($subStr1) != 0) {
+                    echo $subStr1[0] . ". ";
                 }
             }
-        } else {
-            if (strlen($item['First_Name']) >= 9) {
-                echo $item['First_Name'][0] . ". ";
-            } else {
-                echo strtoupper($item['First_Name']) . " ";
+            $middleNameArr = explode(" ", $item['Middle_Name']);
+            // if (count($middleNameArr) > 1) {
+            for ($i = 0; $i < count($middleNameArr); $i++) {
+                $subStr2 = strtoupper($middleNameArr[$i]);
+                if (strlen($subStr2) != 0) {
+                    echo $subStr2[0] . ". ";
+                }
             }
-        }
-        echo strtoupper($item['Last_Name']);
-        echo '</p>';
-        echo '</div>';
-        echo '<div class="socialLinks">';
-        echo '<a class="fb"><i class="fa-brands fa-facebook-f"></i></a>';
-        echo '<a class="twitter"><i class="fa-brands fa-twitter"></i></a>';
-        echo '<a class="insta"><i class="fa-brands fa-instagram"></i></a>';
-        echo '<a class="in"><i class="fa-brands fa-linkedin-in"></i></a>';
-        echo '<a class="wtsapp" class=""><i class="fa-brands fa-whatsapp"></i></a>';
-        echo '<a class="email"><i class="fa-regular fa-envelope"></i></a>';
-        echo '<a href="volunteer.php?key=' . $item["Member_ID"] . "&district=" . $district . "&region=" . $regionName . "&zone=" . $zone . "&clubID=" . $clubID . '" class="more"><i class="fa-solid fa-plus"></i></a>';
+            $lastNameArr = explode(" ", $item['Last_Name']);
+            if (count($lastNameArr) > 1) {
+                for ($i = 0; $i < count($lastNameArr) - 1; $i++) {
+                    $subStr3 = strtoupper($lastNameArr[$i]);
+                    if (strlen($subStr3) != 0) {
+                        echo $subStr3[0] . ". ";
+                    }
+                }
+                if (isset($lastNameArr[count($lastNameArr) - 1])) {
+                    echo strtoupper($lastNameArr[count($lastNameArr) - 1]);
+                }
+            } else {
+                echo strtoupper($item['Last_Name']) . " ";
+            }
+            // else {
+            //     if (strlen($item['First_Name']) >= 9) {
+            //         echo $item['First_Name'][0] . ". ";
+            //     } else {
+            //         echo strtoupper($item['First_Name']) . " ";
+            //     }
+            // }
+            // echo strtoupper($item['Last_Name'] . " " . $item['Suffix']);
+            echo '</p>';
+            echo '<p class="position">' . $title . '</p>';
 
-        echo '</div>';
-        echo '</div>';
-        echo '</div>';
+            echo '</div>';
+            echo '<div class="socialLinks">';
+            echo '<a class="fb"><i class="fa-brands fa-facebook-f"></i></a>';
+            echo '<a class="twitter"><i class="fa-brands fa-twitter"></i></a>';
+            echo '<a class="insta"><i class="fa-brands fa-instagram"></i></a>';
+            echo '<a class="in"><i class="fa-brands fa-linkedin-in"></i></a>';
+            echo '<a class="wtsapp" class=""><i class="fa-brands fa-whatsapp"></i></a>';
+            echo '<a class="email"><i class="fa-regular fa-envelope"></i></a>';
+            echo '<a href="volunteer.php?key=' . $item["Member_ID"] . "&district=" . $district . "&region=" . $regionName . "&zone=" . $zone . "&clubID=" . $clubID . "&prefix=" . $prefix . '" class="more"><i class="fa-solid fa-plus"></i></a>';
+
+            echo '</div>';
+            echo '</div>';
+            echo '</div>';
+        }
+        array_push($lastMemberID2, $item['Member_ID']);
     }
 
     function printMemberTitled($item, $memTitle, $title3, $lastMemID)
@@ -314,52 +415,54 @@ $clubDetails2 = mysqli_fetch_all($resultClubDetails, MYSQLI_ASSOC);
     <div class="volunteersOuter">
 
         <?php
-// if ($searchKey != 'none') {
-foreach ($volunteers as $item) {
-
-            if ($item["Title"] == null) {
-
-                // printMember($item);
-            }
-}
-// } else {
-
-$lastMemID = "";
-foreach ($titleArr as $title3) {
-
+        if ($searchKey != 'none') {
             foreach ($volunteers as $item) {
 
-                if ($item["Title"] != null) {
-                    $memTitles =  explode("-", $item["Title"]);
-                    // echo implode("|", $memTitles) . " </br>";
-                    if ($item["Member_ID"] != $lastMemID) {
-                        $lastMemTittle = "";
-                        $titleCount = 0;
-                        foreach ($memTitles as $memTitle) {
-                            if (in_array($memTitle, $titleArr)) {
-                                $titleCount++;
-                            }
-                            // echo $titleCount;
+                // if ($item["Title"] == null) {
 
-                            if ($memTitle == $title3 & $titleCount <= 1) {
-                                printMember($item);
+                printMember($item);
+                // }
+            }
+        } else {
+
+            $lastMemID = "";
+            foreach ($titleArr as $title3) {
+
+                foreach ($volunteers as $item) {
+
+                    if ($item["Title"] != null) {
+                        $memTitles =  explode("-", $item["Title"]);
+                        if ($item["Member_ID"] != $lastMemID) {
+                            $lastMemTittle = "";
+                            $titleCount = 0;
+                            foreach ($memTitles as $memTitle) {
+                                // if (in_array($memTitle, $titleArr)) {
+                                //     $titleCount++;
+                                // }
+                                if (($memTitle == $title3)) {
+                                    $titleCount++;
+                                }
+                                // echo $titleCount;
+
+                                if ($memTitle == $title3 & $titleCount <= 1) {
+                                    printMember($item);
+                                }
+                                $lastMemID = $item["Member_ID"];
+                                $lastMemTittle = $memTitle;
                             }
-                            $lastMemID = $item["Member_ID"];
-                            $lastMemTittle = $memTitle;
                         }
                     }
                 }
             }
-        }
 
-foreach ($volunteers as $item) {
+            foreach ($volunteers as $item) {
 
-            if ($item["Title"] == null) {
+                if ($item["Title"] == null) {
 
-                printMember($item);
+                    printMember($item);
+                }
             }
         }
-        // }
 
         ?>
 
