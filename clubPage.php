@@ -1,5 +1,5 @@
 <?php include 'inc/header.php'; ?>
-<link rel="stylesheet" type="text/css" href="style/clubPage54.css">
+<link rel="stylesheet" type="text/css" href="style/clubPage55.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/solid.min.js" integrity="sha512-apZ8JDL5kA1iqvafDdTymV4FWUlJd8022mh46oEMMd/LokNx9uVAzhHk5gRll+JBE6h0alB2Upd3m+ZDAofbaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- //Delete -->
@@ -90,7 +90,7 @@ $titleArrPre = [
 ];
 
 
-$fetchDef = "SELECT * FROM c_1_members_new WHERE District_Name = '$escapedDistrict' AND Region_Name = '$escapedRegionName' AND Zone_Name = '$escapedZoneName' AND Club_ID = '$escapedClubID' ORDER BY CAST(SUBSTRING(Club_ID, 6) AS UNSIGNED) ASC LIMIT 10";
+$fetchDef = "SELECT * FROM c_1_members_new WHERE District_Name = '$escapedDistrict' AND Region_Name = '$escapedRegionName' AND Zone_Name = '$escapedZoneName' AND Club_ID = '$escapedClubID' ORDER BY CAST(SUBSTRING(Club_ID, 6) AS UNSIGNED) ASC ";
 $resultDef = mysqli_query($conn, $fetchDef);
 $volunteersDef = mysqli_fetch_all($resultDef, MYSQLI_ASSOC);
 ?>
@@ -200,7 +200,7 @@ $clubDetails2 = mysqli_fetch_all($resultClubDetails, MYSQLI_ASSOC);
                     <!-- <span>Chartered On: <span class="content"><?php echo $clubDetails2[0]["Charter_Date"] ?></span></span><br> -->
                     <span>CHARTERED ON: <span class="content"><?php echo date("d-m-Y", strtotime($clubDetails2[0]["Charter_Date"])) ?></span></span><br>
 
-                    <span>MEMBER COUNT: <span class="content"><?php echo count($volunteers); ?></span></span>
+                    <span>MEMBER COUNT: <span class="content"><?php echo count($volunteersDef); ?></span></span>
                 </div>
                 <div class="sec2">
                     <span class="paySection">LCI PAYMENT: <span class="content lciPayment"><?php $payment = '';

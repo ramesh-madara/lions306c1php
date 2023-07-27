@@ -114,7 +114,6 @@ printt("none", "none");
   #goToTopBtn:active {
     transition: 0.05s;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.545);
-
     bottom: 40px;
   }
 </style>

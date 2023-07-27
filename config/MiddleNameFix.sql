@@ -1,0 +1,1 @@
+update c_1_members_new set Middle_Name = null where Middle_Name = "-";
