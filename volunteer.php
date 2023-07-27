@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="style/volunteerIndividual.css">
+<link rel="stylesheet" type="text/css" href="style/volunteerIndividual2.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <?php
@@ -23,10 +23,12 @@ $sanitized_key = mysqli_real_escape_string($conn, $key);
 
 // Construct the SQL query
 $query = "SELECT * FROM c_1_members_new WHERE Member_ID = '$sanitized_key' LIMIT 1";
-
-// Execute the query
 $result = mysqli_query($conn, $query);
-
+// ---
+$getAllMembers = "SELECT * FROM c_1_members_new WHERE Club_ID = '$clubID' ";
+$allMembersResult = mysqli_query($conn, $getAllMembers);
+$sllMemebersArr = mysqli_fetch_all($allMembersResult, MYSQLI_ASSOC);
+echo count($sllMemebersArr);
 // Check if the query execution was successful
 if ($result) {
 

@@ -56,7 +56,6 @@ body {
   background-color: #373737 !important;
   border: none;
   width: 160px;
-
 }
 .searchComponent .showAll {
   display: flex;
@@ -68,7 +67,6 @@ body {
   background-color: #666666 !important;
   border: none;
   width: 160px;
-
 }
 .districtPageLink {
   display: flex;
@@ -107,7 +105,7 @@ body {
   justify-content: center;
   align-items: center;
   /* width: 50px; */
-    width: 160px;
+  width: 160px;
 
   /* height: 25px; */
 }
@@ -328,7 +326,7 @@ body {
   font-size: 3.5rem;
   line-height: 1;
   margin-bottom: 35px;
-  color: #45AC89;
+  color: #45ac89;
 }
 .clubDetails .details {
   margin-top: -25px;
@@ -344,19 +342,22 @@ body {
   /* background-color: aquamarine; */
   /* gap: 20px; */
 }
-.clubDetails .details .upperSec .sec1 .content,
-.clubDetails .details .upperSec .sec2 .content {
-  line-height: 0.36;
+.upperSec .sec1 span,
+.upperSec .sec2 span {
+  line-height: 1.86;
 }
 .clubDetails .details .lowerSec {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   min-width: 80vw;
-  margin-top: 15px;
+  margin-top: 18px;
   margin-bottom: 20px;
   flex-wrap: wrap;
   gap: 0px;
+}
+.lowerSecDetails .content {
+  line-height: 0.96;
 }
 .clubDetails .details .upperSec .sec1 {
   /* background-color: rgba(0, 255, 255, 0.328); */
@@ -374,7 +375,6 @@ body {
   margin: -10px 0px 0px 0px;
   line-height: 0.7;
 }
-
 
 .paySection {
   display: flex;
@@ -446,7 +446,7 @@ body {
     width: calc((80vw - (5 * 10px)) / 1);
     width: 97vw;
   }
- 
+
   .clubDetails .clubNameUpper {
     scale: 0.9;
     font-size: xx-large;
@@ -470,7 +470,7 @@ body {
     gap: 5px;
     margin-top: -15px;
   }
- 
+
   .searchComponent input {
     width: 40vw;
     font-size: smaller;
@@ -487,10 +487,11 @@ body {
     /* min-width: 80vw; */
     width: calc((95vw - (5 * 0px)) / 1);
   }
-   .breadCrumbs{
+  .breadCrumbs {
     width: calc((95vw - (5 * 0px)) / 1);
   }
-  .showAll, .search{
+  .showAll,
+  .search {
     font-size: 0.65rem !important;
   }
 }

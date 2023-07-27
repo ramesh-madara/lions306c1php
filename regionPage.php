@@ -3,19 +3,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/solid.min.js" integrity="sha512-apZ8JDL5kA1iqvafDdTymV4FWUlJd8022mh46oEMMd/LokNx9uVAzhHk5gRll+JBE6h0alB2Upd3m+ZDAofbaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- //Delete -->
-<?php
-// if (isset($_GET['id'])) {
-//   $id = $_GET['id'];
-//   $query = "DELETE FROM `appointment` WHERE appointmentNumber = '$id'";
-//   $run = mysqli_query($conn, $query);
-//   if ($run) {
-//     header('location:feedback.php');
-//   } else {
-//     echo "Error: " . mysqli_error($conn);
-//   }
-//   echo $_GET['id'];
-// }
-?>
+
 
 <!--SEARCHED or NOT BITFLIP-->
 <?php
@@ -101,7 +89,7 @@ if ($searchKey != 'none') {
     </div>
 
     <div class="clubDetails">
-        <p class="clubNameUpper">LIONS DISTRICT 306C1 : REGION 6A</p>
+        <p class="clubNameUpper">LIONS DISTRICT 306C1 : <?php echo strtoupper($regionName) ?></p>
         <div class="details">
             <div class="upperSec">
                 <div class="sec1">

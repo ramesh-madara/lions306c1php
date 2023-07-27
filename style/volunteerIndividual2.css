@@ -11,15 +11,11 @@ body {
 }
 td {
   min-width: 100px;
-  /* display: flex; */
-  /* justify-content: flex-start; */
-  /* align-items: flex-end; */
 }
 
 /* Style for the scrollbar track */
 ::-webkit-scrollbar {
   width: 8px;
-  /* border-radius: 10px; */
   background-color: #424242;
 }
 
@@ -34,13 +30,9 @@ td {
   background-color: #ffffff;
 }
 .memberOuterMost {
-  /* margin-left: -10px; */
-  /* margin-top: -10px; */
-  /* background-color: rgba(0, 0, 0, 0.739); */
   min-width: 100vw;
   display: flex;
   justify-content: flex-start;
-  /* display: none;    */
 }
 .memberOuterMost .photoOuter {
   position: fixed;
@@ -49,8 +41,6 @@ td {
   max-width: 50vw;
   min-height: 100vh;
   max-height: 100vh;
-
-  /* border-radius: 10px; */
 }
 .memberOuterMost .photoOuter img {
   /* position: fixed; */
@@ -58,8 +48,6 @@ td {
   width: 100%;
   height: 100vh;
   object-fit: cover;
-  /* background-color: rgba(0, 0, 0, 0.345); */
-  /* border-radius: 10px; */
 }
 .description {
   margin: 15px 0px 40px 0px;
@@ -110,6 +98,7 @@ td {
   font-size: 2.4rem;
   font-weight: 500;
   margin-top: 50px;
+  left: 0px !important;
 }
 .socialLinks {
   display: flex;
@@ -159,6 +148,10 @@ td {
   margin-left: -5px;
 }
 @media (max-width: 711px) {
+  .contents{
+    flex-direction: column;
+    align-items: flex-start;
+  }
   .memberOuterMost {
     overflow: hidden;
     min-width: 100vw;
@@ -221,8 +214,12 @@ td {
     border-radius: 5px;
   }
   .description {
-  margin-left: 20px;
-  width: 100%;
-  /* display: none; */
-}
+    padding: 10px;
+    width: 100%;
+    /* display: none; */
+  }
+  .contactDetails {
+    width: 100%;
+    padding: 0px 10px 0px 10px;
+  }
 }
