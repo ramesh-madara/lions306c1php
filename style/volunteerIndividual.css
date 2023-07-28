@@ -147,8 +147,51 @@ td {
   color: #373737;
   margin-left: -5px;
 }
+
+.memberNavigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  border-radius: 35px;
+  background-color: white;
+  width: 100px;
+  /* Customize the button's background color */
+  color: #fff;
+  /* Customize the button's text color */
+  cursor: pointer;
+  padding: 10px 10px 10px 10px;
+  /* border-radius: 4px; */
+  transition: 0.2s;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.545);
+}
+.memberNavigation a i:active {
+    color: #89ffd8 !important;
+scale: 1.05;
+}
+.memberNavigation:hover {
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.545);
+
+}
+.backtoDistrict {
+  color: #45ac89 !important;
+}
+.active {
+  color: #45ac89 !important;
+  pointer-events: all;
+}
+.inactive {
+  color: #858585 !important;
+  pointer-events: none;
+}
 @media (max-width: 711px) {
-  .contents{
+  .contents {
     flex-direction: column;
     align-items: flex-start;
   }

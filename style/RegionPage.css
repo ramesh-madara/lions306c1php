@@ -449,7 +449,7 @@ body {
  
   .clubDetails .clubNameUpper {
     scale: 0.9;
-    font-size: xx-large;
+    font-size: 3rem;
     margin-top: 7px;
     margin-left: -10px;
   }

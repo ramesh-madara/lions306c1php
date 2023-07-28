@@ -216,7 +216,7 @@ if ($searchKey != 'none') {
                         <a class="in"><i class="fa-brands fa-linkedin-in"></i></a>
                         <a class="wtsapp" class=""><i class="fa-brands fa-whatsapp"></i></a>
                         <a class="email"><i class="fa-regular fa-envelope"></i></a>
-                        <a href="" class="more"><i class="fa-solid fa-plus"></i></a>
+                        <!-- <a href="" class="more"><i class="fa-solid fa-plus"></i></a> -->
                         <?php
                         echo '<a href="volunteer.php?key=' . $item["Member_ID"] . "&district=" . $district . "&region=" . $regionName . "&zone=" . $item["Zone_Name"] . "&clubID=" . $item["Club_ID"] . "&prefix=" . $item["Prefix"] . '" class="more"><i class="fa-solid fa-plus"></i></a>';
 

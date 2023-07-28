@@ -23,22 +23,22 @@
     // Check if the form has been submitted
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Retrieve form values and assign them to variables
-        $M_N = $_POST['m_n'];
-        $District = $_POST['district'];
-        $Region = $_POST['region'];
-        $Zone = $_POST['zone'];
-        $Club = $_POST['club'];
-        $ClubPosition1 = $_POST['club_position_1'];
-        $ClubPosition2 = $_POST['club_position_2'];
-        $ClubPosition3 = $_POST['club_position_3'];
-        $DistrictPosition = $_POST['district_position_1'];
-        $Name = $_POST['name'];
-        $Address = $_POST['address'];
-        $Designation = $_POST['designation'];
-        $Employer = $_POST['employer'];
-        $Tel = $_POST['tel'];
-        $Email = $_POST['email'];
-        $Spouse = $_POST['spouse'];
+        $M_N = isset($_POST['m_n']) ? htmlspecialchars($_POST['m_n']) : '';
+        $District = isset($_POST['district']) ? htmlspecialchars($_POST['district']) : '';
+        $Region = isset($_POST['region']) ? htmlspecialchars($_POST['region']) : '';
+        $Zone = isset($_POST['zone']) ? htmlspecialchars($_POST['zone']) : '';
+        $Club = isset($_POST['club']) ? htmlspecialchars($_POST['club']) : '';
+        $ClubPosition1 = isset($_POST['club_position_1']) ? htmlspecialchars($_POST['club_position_1']) : '';
+        $ClubPosition2 = isset($_POST['club_position_2']) ? htmlspecialchars($_POST['club_position_2']) : '';
+        $ClubPosition3 = isset($_POST['club_position_3']) ? htmlspecialchars($_POST['club_position_3']) : '';
+        $DistrictPosition = isset($_POST['district_position_1']) ? htmlspecialchars($_POST['district_position_1']) : '';
+        $Name = isset($_POST['name']) ? htmlspecialchars($_POST['name']) : '';
+        $Address = isset($_POST['address']) ? htmlspecialchars($_POST['address']) : '';
+        $Designation = isset($_POST['designation']) ? htmlspecialchars($_POST['designation']) : '';
+        $Employer = isset($_POST['employer']) ? htmlspecialchars($_POST['employer']) : '';
+        $Tel = isset($_POST['tel']) ? htmlspecialchars($_POST['tel']) : '';
+        $Email = isset($_POST['email']) ? filter_var($_POST['email'], FILTER_SANITIZE_EMAIL) : '';
+        $Spouse = isset($_POST['spouse']) ? htmlspecialchars($_POST['spouse']) : '';
 
         // Insert the values into the database table (assuming you have a database connection established)
         // Replace 'your_table_name' with the actual table name in your database

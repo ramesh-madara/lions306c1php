@@ -1,5 +1,5 @@
 <?php include 'inc/header.php'; ?>
-<link rel="stylesheet" type="text/css" href="style/clubs2.css">
+<link rel="stylesheet" type="text/css" href="style/index.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/solid.min.js" integrity="sha512-apZ8JDL5kA1iqvafDdTymV4FWUlJd8022mh46oEMMd/LokNx9uVAzhHk5gRll+JBE6h0alB2Upd3m+ZDAofbaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- //Delete -->
@@ -40,10 +40,6 @@ function printt($reg, $zon)
     }
     // $zon = "Zone: 1";
     $fetch = "SELECT DISTINCT  Region_Name from clubs WHERE District_Name = '$district' AND Region_Name = '$reg'  ORDER BY Region_Name ASC";
-    // } else {
-    // $fetch = "SELECT DISTINCT  Region_Name from clubs WHERE District_Name = '$district' AND Region_Name = '$reg' and Zone_Name = '$zon' ORDER BY Region_Name ASC";
-    // echo $zon;
-    // }
   }
   $result = mysqli_query($conn, $fetch);
   $volunteers = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -147,16 +143,17 @@ printt("none", "none");
       </div>
 
     </div>
-    <nav class="navbar navbar-light ">
-      <form method="POST" action="<?php echo htmlspecialchars(
-                                    $_SERVER['PHP_SELF']
-                                  ); ?>" class="mt-4 w-155" style="display: flex;">
-        <input name="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
-        <!-- <button class="btn btn-outline-success " name="submit" type="submit">Search</button> -->
-        <input type="submit" name="submit" value="SEARCH" class="search">
-        <input type="submit" name="showall" value="SHOW ALL" class="showall">
-      </form>
-    </nav>
+    <div class="searchOuter">
+      <nav class="searchComponent ">
+        <!-- <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="mt-4 w-155" style="display: flex;"> -->
+        <input name="search" id="search" class="form-control" type="search" placeholder="Enter Search key" aria-label="Search" onkeydown="if(event.keyCode==13) document.querySelector('.search').click()">
+        <a class="btn btn-dark w-35 search" onclick="this.href='clubPage.php?district=<?php echo $district  ?>&region=<?php echo $regionName; ?>&zone=<?php echo $zone; ?>&clubID=<?php echo $clubID; ?>&searchKey='+(document.getElementById('search').value ==''? 'none':document.getElementById('search').value)">
+          SEARCH</a>
+        <a class="btn btn-dark w-35 showAll" onclick="this.href='clubPage.php?district=<?php echo $district  ?>&region=<?php echo $regionName; ?>&zone=<?php echo $zone; ?>&clubID=<?php echo $clubID; ?>&searchKey=<?php echo 'none'; ?>'">
+          SHOW ALL</a>
+
+      </nav>
+    </div>
 
 
 
@@ -167,21 +164,7 @@ printt("none", "none");
 
       }
 
-      // function setRegion(region) {
-      //   var xhr = new XMLHttpRequest();
-      //   xhr.open("POST", "clubs.php", true);
-      //   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-      //   xhr.onreadystatechange = function() {
-      //     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-      //       // Request completed successfully
-      //       console.log("<?php echo $region; ?>");
-      //       console.log(xhr.responseText);
-      //     }
-      //   };
-      //   xhr.send("region=" + encodeURIComponent(region));
-      //   var regionValue = "<?php echo $region; ?>";
-      //   console.log(regionValue);
-      // }
+
 
       function updateZones(str) {
 
@@ -313,7 +296,11 @@ printt("none", "none");
           color: #45AC89;
         }
 
-        @media (max-width: 657px) {}
+        @media (max-width: 974px) {
+          .hierarchy {
+            width: 100vw;
+          }
+        }
       </style>
       <?php
       if ($_SERVER['REQUEST_METHOD'] === 'POST') {

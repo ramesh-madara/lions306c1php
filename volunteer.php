@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="style/volunteerIndividual2.css">
+<link rel="stylesheet" type="text/css" href="style/volunteerIndividual.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <?php
@@ -27,8 +27,44 @@ $result = mysqli_query($conn, $query);
 // ---
 $getAllMembers = "SELECT * FROM c_1_members_new WHERE Club_ID = '$clubID' ";
 $allMembersResult = mysqli_query($conn, $getAllMembers);
-$sllMemebersArr = mysqli_fetch_all($allMembersResult, MYSQLI_ASSOC);
-echo count($sllMemebersArr);
+$allMembersArr = mysqli_fetch_all($allMembersResult, MYSQLI_ASSOC);
+
+// Assuming $currentMemberId is the Member_ID of the current record/item you are working with.
+$currentMemberId = $key; // Replace this with the actual Member_ID of the current record.
+
+// Find the position/index of the current record/item in the array.
+$currentMemberIndex = array_search($currentMemberId, array_column($allMembersArr, 'Member_ID'));
+$nextNavBtnActiveness = 'active';
+$lastNavBtnActiveness = 'active';
+// Check if the current record/item was found in the array and if it's not the last element.
+if ($currentMemberIndex !== false && isset($allMembersArr[$currentMemberIndex + 1])) {
+    // Get the next record/item and its Member_ID.
+    $nextMember = $allMembersArr[$currentMemberIndex + 1];
+    $nextMemberId = $nextMember['Member_ID'];
+    // Now $nextMemberId contains the Member_ID of the next record/item.
+    // echo "The Member_ID of the next record/item is: " . $nextMemberId;
+    $nextNavBtnActiveness = 'active';
+} else {
+    $nextNavBtnActiveness = 'inactive';
+    $nextMemberId = $key;
+
+
+    // echo "No next record/item found.";
+}
+if ($currentMemberIndex !== false && isset($allMembersArr[$currentMemberIndex - 1])) {
+    // Get the next record/item and its Member_ID.
+    $lastMember = $allMembersArr[$currentMemberIndex - 1];
+    $lastMemberId = $lastMember['Member_ID'];
+    // Now $lastMemberId contains the Member_ID of the last record/item.
+    // echo "The Member_ID of the last record/item is: " . $lastMemberId;
+    $lastNavBtnActiveness = 'active';
+} else {
+    // echo "No next record/item found.";
+    $lastNavBtnActiveness = 'inactive';
+    $lastMemberId = $key;
+}
+
+
 // Check if the query execution was successful
 if ($result) {
 
@@ -238,6 +274,18 @@ if ($result) {
 
                     </div>
 
+                </div>
+                <?php
+                if ($nextNavBtnActiveness == 'inactive') {
+                    $nextURL = '';
+                } else {
+                }
+                ?>
+                <div class="memberNavigation">
+                    <a href="volunteer.php?key=<?php echo $lastMemberId ?>&district=<?php echo $district ?>&region=<?php echo $regionName ?>&zone=<?php echo $zone ?>&prefix=<?php echo $prefix ?>&clubID=<?php echo $clubID ?>"><i class="<?php echo $lastNavBtnActiveness . " " ?>fa-solid fa-left-long"></i></a>
+                    <a href="clubPage.php?district=<?php echo $district  ?>&region=<?php echo $regionName ?>&zone=<?php echo $zone ?>&clubID=<?php echo $clubID; ?>&searchKey=<?php echo 'none' ?>"><i class=" backtoDistrict fa-solid fa-house-chimney "></i></a>
+
+                    <a href="volunteer.php?key=<?php echo $nextMemberId ?>&district=<?php echo $district ?>&region=<?php echo $regionName ?>&zone=<?php echo $zone ?>&prefix=<?php echo $prefix ?>&clubID=<?php echo $clubID ?>"><i class="<?php echo $nextNavBtnActiveness . " " ?> fa-solid fa-right-long"></i></a>
                 </div>
 
             </div>

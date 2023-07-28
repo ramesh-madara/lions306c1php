@@ -98,13 +98,13 @@ if ($searched == true) {
     <div class="banner">
         <!-- <p><?php echo $escapedZoneName; ?></p> -->
         <p>
-            <?php echo $district . "</br> " . $regionName . " | " . $escapedZoneName; ?>
+            OUR ZONE
         </p>
         <img src="img/volunteersBanner.jpg" alt="">
     </div>
 
     <div class="clubDetails">
-        <p class="clubNameUpper">LIONS CLUB OF YATINUWARA GREEN ELITE</p>
+        <p class="clubNameUpper"> <?php echo strtoupper($district . "</br> " . $regionName . "   " . $escapedZoneName); ?> </p>
         <div class="details">
             <div class="upperSec">
                 <div class="sec1">
@@ -227,7 +227,7 @@ if ($searched == true) {
                         <a class="in"><i class="fa-brands fa-linkedin-in"></i></a>
                         <a class="wtsapp" class=""><i class="fa-brands fa-whatsapp"></i></a>
                         <a class="email"><i class="fa-regular fa-envelope"></i></a>
-                        <a href="" class="more"><i class="fa-solid fa-plus"></i></a>
+                        <!-- <a href="" class="more"><i class="fa-solid fa-plus"></i></a> -->
                         <?php
                         echo '<a href="volunteer.php?key=' . $item["Member_ID"] . "&district=" . $district . "&region=" . $regionName . "&zone=" . $item["Zone_Name"] . "&clubID=" . $item["Club_ID"] . "&prefix=" . $item["Prefix"] . '" class="more"><i class="fa-solid fa-plus"></i></a>';
 
